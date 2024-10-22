@@ -10,6 +10,7 @@ cache:
 stages:                   # List of stages for jobs, and their order of execution
   - build
   - test
+  - sonarqube-check
 
 build:
   stage: build
@@ -41,5 +42,31 @@ test:
       - target/site/jacoco/
   only:
     - master
+  tags:
+    - docker-executor
+
+sonarqube-check:
+  stage: sonarqube-check
+  image: maven:3.9.6-eclipse-temurin-17
+  variables:
+    SONAR_USER_HOME: "${CI_PROJECT_DIR}/.sonar"  # Defines the location of the analysis task cache
+    GIT_DEPTH: "0"  # Tells git to fetch all the branches of the project, required by the analysis task
+  cache:
+    key: "${CI_JOB_NAME}"
+    paths:
+      - .sonar/cache
+  script:
+    - mvn verify sonar:sonar -Dsonar.projectKey=
+  allow_failure: true
+  only:
+    - master
+  needs:
+    - job: build
+      artifacts: true
+  dependencies:
+    - build
+  artifacts:
+    paths:
+      - target/
   tags:
     - docker-executor
