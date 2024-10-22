@@ -56,7 +56,7 @@ sonarqube-check:
     paths:
       - .sonar/cache
   script:
-    - mvn verify properties:read-project-properties sonar:sonar
+    - mvn verify sonar:sonar -Dsonar.projectKey=object-oriented-programming-2_templates_java-maven-template_AZK0a-SOcFOkTi-Mf4ut
   allow_failure: true
   only:
     - master
