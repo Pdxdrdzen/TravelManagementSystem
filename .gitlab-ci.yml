@@ -56,7 +56,7 @@ sonarqube-check:
     paths:
       - .sonar/cache
   script:
-    - mvn verify sonar:sonar
+    - mvn verify properties:read-project-properties sonar:sonar
   allow_failure: true
   only:
     - master
