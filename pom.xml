@@ -14,12 +14,12 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <sonar.projectKey>object-oriented-programming-2_templates_java-maven-template_AZK5GhEbcFOkTi-Mf4vU</sonar.projectKey>
         <sonar.projectName>Maven Example Project</sonar.projectName>
-        <sonar.projectVersion>${version}</sonar.projectVersion>
+        <sonar.projectVersion>${project.version}</sonar.projectVersion>
         <sonar.sources>src/main/java</sonar.sources>
         <sonar.tests>src/test/java</sonar.tests>
         <sonar.java.source>17</sonar.java.source>
         <sonar.java.coveragePlugin>jacoco</sonar.java.coveragePlugin>
-        <sonar.jacoco.reportPaths>target/site/jacoco/jacoco.xml</sonar.jacoco.reportPaths>
+        <sonar.coverage.jacoco.xmlReportPaths>target/site/jacoco/jacoco.xml</sonar.coverage.jacoco.xmlReportPaths>
         <sonar.junit.reportPaths>target/surefire-reports</sonar.junit.reportPaths>
         <sonar.sourceEncoding>UTF-8</sonar.sourceEncoding>
         <sonar.qualitygate.wait>true</sonar.qualitygate.wait>
