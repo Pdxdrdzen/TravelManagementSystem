@@ -13,7 +13,7 @@
         <maven.compiler.target>17</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <sonar.projectKey>object-oriented-programming-2_templates_java-maven-template_AZK0a-SOcFOkTi-Mf4ut</sonar.projectKey>
-        <sonar.projectName>Example Project</sonar.projectName>
+        <sonar.projectName>Maven Example Project</sonar.projectName>
         <sonar.projectVersion>${version}</sonar.projectVersion>
         <sonar.sources>src/main/java</sonar.sources>
         <sonar.tests>src/test/java</sonar.tests>
