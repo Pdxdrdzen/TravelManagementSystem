@@ -17,7 +17,7 @@ build:
   image: maven:3.9.6-eclipse-temurin-17
   script:
     - echo "Building the code..."
-    - mvn $MAVEN_CLI_OPTS $MAVEN_OPTS Dmaven.test.skip=true clean install
+    - mvn $MAVEN_CLI_OPTS $MAVEN_OPTS -Dmaven.test.skip=true clean install
     - echo "Build complete."
   artifacts:
     paths:
