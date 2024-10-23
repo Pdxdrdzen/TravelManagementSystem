@@ -65,6 +65,7 @@ sonarqube-check:
       artifacts: true
   dependencies:
     - build
+    - test
   artifacts:
     paths:
       - target/
