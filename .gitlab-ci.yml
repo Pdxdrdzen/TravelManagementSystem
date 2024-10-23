@@ -63,6 +63,8 @@ sonarqube-check:
   needs:
     - job: build
       artifacts: true
+    - job: test
+      artifacts: true
   dependencies:
     - build
     - test
