@@ -38,8 +38,9 @@ test:
   artifacts:
     reports:
       junit: target/surefire-reports/*.xml
-    paths:
-      - target/site/jacoco/
+      coverage_report:
+        coverage_format: jacoco
+        path: target/site/jacoco/
   only:
     - master
   tags:
