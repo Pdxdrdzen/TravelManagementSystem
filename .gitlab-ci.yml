@@ -37,7 +37,7 @@ test:
     - echo "Test complete."
   artifacts:
     reports:
-      junit: target/surefire-reports/*.xml
+      junit: target/surefire-reports/**/TEST-*.xml
       coverage_report:
         coverage_format: jacoco
         path: target/site/jacoco/
