@@ -40,7 +40,7 @@ test:
       junit: target/surefire-reports/**/TEST-*.xml
       coverage_report:
         coverage_format: jacoco
-        path: target/site/jacoco/
+        path: target/site/jacoco/**/jacoco*.xml
   only:
     - master
   tags:
