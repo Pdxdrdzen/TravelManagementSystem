@@ -12,8 +12,8 @@
         <maven.compiler.source>17</maven.compiler.source>
         <maven.compiler.target>17</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <sonar.projectKey>object-oriented-programming-2_templates_java-maven-template_AZK5GhEbcFOkTi-Mf4vU</sonar.projectKey>
-        <sonar.projectName>Maven Example Project</sonar.projectName>
+        <sonar.projectKey>object-oriented-programming-2_2024_2id12a_project-team6-pdrdzen-mlaszcz_AZLD3tQnI8kAtb7mvIzs</sonar.projectKey>
+        <sonar.projectName>Project-Team6-PDrdzen-MLaszcz</sonar.projectName>
         <sonar.projectVersion>${project.version}</sonar.projectVersion>
         <sonar.sources>src/main/java</sonar.sources>
         <sonar.tests>src/test/java</sonar.tests>
