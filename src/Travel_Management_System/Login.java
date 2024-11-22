@@ -47,6 +47,32 @@ public class Login extends javax.swing.JFrame {
         tfpassword.setBounds(60,80,200,25);
         p2.add(tfpassword);
 
+        JButton login=new JButton("Zaloguj sie");
+        login.setBounds(60,200,130,30);
+        login.setBackground(new Color(176,216,230));
+        login.setForeground(Color.white);
+        login.setBorder(new LineBorder(Color.BLACK ));
+        p2.add(login);
+
+        JButton signup=new JButton("Zarejestruj sie");
+        signup.setBounds(200,200,130,30);
+        signup.setBackground(new Color(176,216,230));
+        signup.setForeground(Color.white);
+        signup.setBorder(new LineBorder(Color.BLACK ));
+        p2.add(signup);
+
+        JButton ForgotPassword=new JButton("Zapomnialem hasla");
+        ForgotPassword.setBounds(120,250,130,30);
+        ForgotPassword.setBackground(new Color(176,216,230));
+        ForgotPassword.setForeground(Color.white);
+        ForgotPassword.setBorder(new LineBorder(Color.BLACK ));
+        p2.add(ForgotPassword);
+
+        JLabel text=new JLabel("Problem z logowaniem?");
+        text.setBounds(300,250,150,20);
+        text.setForeground(Color.RED);
+        p2.add(text);
+
 
 
         setVisible(true);
