@@ -4,8 +4,13 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.awt.event.*;
 
-public class Rejestracja extends JFrame {
+public class Rejestracja extends JFrame implements ActionListener {
+
+    JButton create, back;
+    JTextField tfname, tfusername;
+    JPasswordField tfpassword, tfpassword2;
     Rejestracja() {
         setBounds(350,200,900,360);
         getContentPane().setBackground(Color.white);
@@ -22,7 +27,7 @@ public class Rejestracja extends JFrame {
         username.setBounds(50,20,200,25);
         p1.add(username);
 
-        JTextField tfusername=new JTextField();
+        tfusername=new JTextField();
         tfusername.setBounds(250,20,180,25);
         tfusername.setBorder(BorderFactory.createEmptyBorder());
         p1.add(tfusername);
@@ -32,7 +37,7 @@ public class Rejestracja extends JFrame {
         name.setBounds(50,60,200,25);
         p1.add(name);
 
-        JTextField tfname=new JTextField();
+        tfname=new JTextField();
         tfname.setBounds(250,60,180,25);
         tfname.setBorder(BorderFactory.createEmptyBorder());
         p1.add(tfname);
@@ -42,7 +47,7 @@ public class Rejestracja extends JFrame {
         password.setBounds(50,100,200,25);
         p1.add(password);
 
-        JPasswordField tfpassword=new JPasswordField();
+        tfpassword=new JPasswordField();
         tfpassword.setBounds(250,100,180,25);
         tfpassword.setBorder(BorderFactory.createEmptyBorder());
         p1.add(tfpassword);
@@ -52,16 +57,17 @@ public class Rejestracja extends JFrame {
         password2.setBounds(50,140,200,25);
         p1.add(password2);
 
-        JPasswordField tfpassword2=new JPasswordField();
+        tfpassword2=new JPasswordField();
         tfpassword2.setBounds(250,140,180,25);
         tfpassword2.setBorder(BorderFactory.createEmptyBorder());
         p1.add(tfpassword2);
 
-        JButton create = new JButton("Zarejestruj sie");
+        create = new JButton("Zarejestruj sie");
         create.setBackground(new Color(133,193,233));
         create.setForeground(Color.white);
         create.setFont(new Font("Tahoma",Font.BOLD,14));
         create.setBounds(300,200,180,25);
+        create.addActionListener(this);
         p1.add(create);
 
         create.addActionListener(new ActionListener(){
@@ -85,17 +91,18 @@ public class Rejestracja extends JFrame {
                 }
                 if(!password1.equals(password2)){
                     JOptionPane.showMessageDialog(null,"Hasla nie zgadzaja sie!","Blad",JOptionPane.ERROR_MESSAGE);
-                }if(password1.equals(password2)&&!username.isEmpty()&&!name.isEmpty()){
+                }if(password1.equals(password2)&&!username.isEmpty()&&!name.isEmpty()&&!password1.isEmpty()&&password2.isEmpty()){
                     JOptionPane.showMessageDialog(null,"Rejestracja udana!","Sukces",JOptionPane.INFORMATION_MESSAGE);
                 }
             }
         });
 
-        JButton back = new JButton("Wroc");
+        back = new JButton("Wroc");
         back.setBackground(new Color(133,193,233));
         back.setForeground(Color.white);
         back.setFont(new Font("Tahoma",Font.BOLD,14));
         back.setBounds(50,200,180,25);
+        back.addActionListener(this);
         p1.add(back);
 
        ImageIcon i1=new ImageIcon(ClassLoader.getSystemResource("ikony/ikona_tms.png"));
@@ -109,6 +116,27 @@ public class Rejestracja extends JFrame {
 
         setVisible(true);
 
+    }
+    public void actionPerformed(ActionEvent e){
+if(e.getSource()==create){
+    String username=tfusername.getText();
+    String name=tfname.getText();
+    String password1=new String(tfpassword.getPassword());
+    String password2=new String(tfpassword2.getPassword());
+
+    String query = "insert into users(name,username,password) values ('"+name+"','"+username+"','"+password1+"')";
+    try {
+        Connect c=new Connect();
+        c.s.executeUpdate(query);
+        JOptionPane.showMessageDialog(null,"Konto utworzone z sukcesem!");
+    }catch(Exception e1){
+        e1.printStackTrace();
+    }
+
+}else if(e.getSource()==back){
+setVisible(false);
+new Login();
+}
     }
     public static void main(String[] args) {
         new Rejestracja();
