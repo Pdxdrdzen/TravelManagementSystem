@@ -1,4 +1,4 @@
-package Travel_Management_System;
+package com.example.TravelManagementSystem;
 
 import javax.swing.*;
 import java.awt.*;
@@ -105,7 +105,7 @@ public class Rejestracja extends JFrame implements ActionListener {
         back.addActionListener(this);
         p1.add(back);
 
-       ImageIcon i1=new ImageIcon(ClassLoader.getSystemResource("ikony/ikona_tms.png"));
+       ImageIcon i1=new ImageIcon(ClassLoader.getSystemResource("ikony/signup.png"));
        Image i2= i1.getImage().getScaledInstance(250,250,Image.SCALE_SMOOTH);
        ImageIcon i3=new ImageIcon(i2);
        JLabel image= new JLabel(i3);
@@ -138,4 +138,5 @@ setVisible(false);
 new Login();
 }
     }
+
 }

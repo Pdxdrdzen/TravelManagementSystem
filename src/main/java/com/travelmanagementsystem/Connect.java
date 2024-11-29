@@ -1,4 +1,4 @@
-package Travel_Management_System;
+package com.example.TravelManagementSystem;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -19,5 +19,8 @@ public class Connect {
         } catch(Exception e){
             e.printStackTrace();
         }
+    }
+    public PreparedStatement prepareStatement(String query) throws SQLException {
+        return c.prepareStatement(query);
     }
 }
