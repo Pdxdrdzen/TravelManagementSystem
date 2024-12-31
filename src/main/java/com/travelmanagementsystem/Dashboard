@@ -1,9 +1,14 @@
 package com.example.TravelManagementSystem;
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.*;
 
-public class Dashboard extends JFrame{
-    Dashboard(){
+public class Dashboard extends JFrame implements ActionListener {
+    String username;
+    JButton addPersonalDetails;
+    Dashboard(String username){
         setExtendedState(JFrame.MAXIMIZED_BOTH);
         setLayout(null);
         JPanel p1 = new JPanel();
@@ -37,6 +42,7 @@ public class Dashboard extends JFrame{
         addPersonalDetails.setForeground(Color.WHITE);
         addPersonalDetails.setFont(new Font("Tahoma",Font.PLAIN,20));
         addPersonalDetails.setMargin(new Insets(0,0,0,50));
+        addPersonalDetails.addActionListener(this);
         p2.add(addPersonalDetails);
 
         JButton updatePersonalDetails = new JButton("Aktualizuj dane osobowe");
@@ -170,6 +176,14 @@ public class Dashboard extends JFrame{
 
         setVisible(true);
     }
-  
+    public void actionPerformed(ActionEvent e) {
+        if(e.getSource()==addPersonalDetails){
+            new AddCustomer(username);
+        }
+    }
+    public static void main(String[] args){
+        new Dashboard("");
+    }
+
 
 }
