@@ -15,7 +15,7 @@ public class ViewCustomer extends JFrame implements ActionListener {
         getContentPane().setBackground(Color.WHITE);
         setLayout(null);
 
-        JLabel lblusername=new JLabel("Username");
+        JLabel lblusername=new JLabel("Nazwa użytkownika");
         lblusername.setBounds(30,50,150,25);
         add(lblusername);
 
@@ -31,7 +31,7 @@ public class ViewCustomer extends JFrame implements ActionListener {
         labelid.setBounds(220,110,150,25);
         add(labelid);
 
-        JLabel lblnumber=new JLabel("Number");
+        JLabel lblnumber=new JLabel("Numer telefonu");
         lblnumber.setBounds(30,170,150,25);
         add(lblnumber);
 
@@ -39,7 +39,7 @@ public class ViewCustomer extends JFrame implements ActionListener {
         labelnumber.setBounds(220,170,150,25);
         add(labelnumber);
 
-        JLabel lblname=new JLabel("Name");
+        JLabel lblname=new JLabel("Imię");
         lblname.setBounds(30,230,150,25);
         add(lblname);
 
@@ -47,7 +47,7 @@ public class ViewCustomer extends JFrame implements ActionListener {
         labelname.setBounds(220,230,150,25);
         add(labelname);
 
-        JLabel lblgender=new JLabel("Gender");
+        JLabel lblgender=new JLabel("Płeć");
         lblgender.setBounds(30,290,150,25);
         add(lblgender);
 
@@ -55,7 +55,7 @@ public class ViewCustomer extends JFrame implements ActionListener {
         labelgender.setBounds(220,290,150,25);
         add(labelgender);
 
-        JLabel lblcountry=new JLabel("Country");
+        JLabel lblcountry=new JLabel("Kraj");
         lblcountry.setBounds(500,50,150,25);
         add(lblcountry);
 
@@ -63,7 +63,7 @@ public class ViewCustomer extends JFrame implements ActionListener {
         labelcountry.setBounds(690,50,150,25);
         add(labelcountry);
 
-        JLabel lbladdress=new JLabel("Address");
+        JLabel lbladdress=new JLabel("Adres");
         lbladdress.setBounds(500,110,150,25);
         add(lbladdress);
 
@@ -71,7 +71,7 @@ public class ViewCustomer extends JFrame implements ActionListener {
         labeladdress.setBounds(690,110,150,25);
         add(labeladdress);
 
-        JLabel lblphone=new JLabel("Phone");
+        JLabel lblphone=new JLabel("Numer telefonu");
         lblphone.setBounds(500,170,150,25);
         add(lblphone);
 
@@ -79,7 +79,7 @@ public class ViewCustomer extends JFrame implements ActionListener {
         labelphone.setBounds(690,170,150,25);
         add(labelphone);
 
-        JLabel lblemail=new JLabel("Email");
+        JLabel lblemail=new JLabel("Adres email");
         lblemail.setBounds(500,230,150,25);
         add(lblemail);
 
@@ -87,7 +87,7 @@ public class ViewCustomer extends JFrame implements ActionListener {
         labelemail.setBounds(690,230,150,25);
         add(labelemail);
 
-        back=new JButton("Back");
+        back=new JButton("Wróć");
         back.setBackground(Color.BLACK);
         back.setForeground(Color.WHITE);
         back.setBounds(350,350,100,25);
@@ -133,5 +133,7 @@ public class ViewCustomer extends JFrame implements ActionListener {
     public void actionPerformed(ActionEvent ae){
         setVisible(false);
     }
-   
+    public static void main(String[] args) {
+        new ViewCustomer("pdrdzen");
+    }
 }
