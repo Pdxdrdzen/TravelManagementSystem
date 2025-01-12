@@ -1,5 +1,6 @@
 package com.example.TravelManagementSystem;
 import javax.swing.*;
+import javax.swing.text.View;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -7,7 +8,7 @@ import java.awt.event.*;
 
 public class Dashboard extends JFrame implements ActionListener {
     String username;
-    JButton addPersonalDetails;
+    JButton addPersonalDetails, viewPersonalDetails, updatePersonalDetails, deletePersonalDetails;
     Dashboard(String username){
         setExtendedState(JFrame.MAXIMIZED_BOTH);
         setLayout(null);
@@ -36,7 +37,7 @@ public class Dashboard extends JFrame implements ActionListener {
         p2.setBounds(0,65,300,900);
         add(p2);
 
-        JButton addPersonalDetails = new JButton("Dodaj dane osobowe");
+        addPersonalDetails = new JButton("Dodaj dane osobowe");
         addPersonalDetails.setBounds(0,0,300,50);
         addPersonalDetails.setBackground(new Color(0,0,102));
         addPersonalDetails.setForeground(Color.WHITE);
@@ -45,20 +46,22 @@ public class Dashboard extends JFrame implements ActionListener {
         addPersonalDetails.addActionListener(this);
         p2.add(addPersonalDetails);
 
-        JButton updatePersonalDetails = new JButton("Aktualizuj dane osobowe");
+        updatePersonalDetails = new JButton("Aktualizuj dane osobowe");
         updatePersonalDetails.setBounds(0,50,300,50);
         updatePersonalDetails.setBackground(new Color(0,0,102));
         updatePersonalDetails.setForeground(Color.WHITE);
         updatePersonalDetails.setFont(new Font("Tahoma",Font.PLAIN,20));
         updatePersonalDetails.setMargin(new Insets(0,0,0,20));
+        updatePersonalDetails.addActionListener(this);
         p2.add(updatePersonalDetails);
 
-        JButton viewPersonalDetails = new JButton("Wyswietl dane osobowe");
+        viewPersonalDetails = new JButton("Wyswietl dane osobowe");
         viewPersonalDetails.setBounds(0,100,300,50);
         viewPersonalDetails.setBackground(new Color(0,0,102));
         viewPersonalDetails.setForeground(Color.WHITE);
         viewPersonalDetails.setFont(new Font("Tahoma",Font.PLAIN,20));
         viewPersonalDetails.setMargin(new Insets(0,0,0,30));
+        viewPersonalDetails.addActionListener(this);
         p2.add(viewPersonalDetails);
 
         JButton deletePersonalDetails = new JButton("Usun dane osobowe");
@@ -179,6 +182,10 @@ public class Dashboard extends JFrame implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         if(e.getSource()==addPersonalDetails){
             new AddCustomer(username);
+        }else if(e.getSource()==viewPersonalDetails){
+            new ViewCustomer(username);
+        }else if(e.getSource()==updatePersonalDetails){
+            new UpdateCustomer(username);
         }
     }
     public static void main(String[] args){
