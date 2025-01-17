@@ -8,7 +8,7 @@ import java.awt.event.*;
 
 public class Dashboard extends JFrame implements ActionListener {
     String username;
-    JButton addPersonalDetails, viewPersonalDetails, updatePersonalDetails, deletePersonalDetails, checkpackages, bookpackages,viewpackages;
+    JButton addPersonalDetails, viewPersonalDetails, updatePersonalDetails, deletePersonalDetails, checkpackages, bookpackages,viewpackages, viewhotels;
     Dashboard(String username){
         setExtendedState(JFrame.MAXIMIZED_BOTH);
         setLayout(null);
@@ -99,15 +99,16 @@ public class Dashboard extends JFrame implements ActionListener {
         viewpackages.addActionListener(this);
         p2.add(viewpackages);
 
-        JButton viewhotels = new JButton("Wyswietl dostepne noclegi");
+        viewhotels = new JButton("Wyswietl dostepne hotele");
         viewhotels.setBounds(0,350,350,50);
         viewhotels.setBackground(new Color(0,0,102));
         viewhotels.setForeground(Color.WHITE);
         viewhotels.setFont(new Font("Tahoma",Font.PLAIN,20));
         viewhotels.setMargin(new Insets(0,0,0,60));
+        viewhotels.addActionListener(this);
         p2.add(viewhotels);
 
-        JButton bookhotels = new JButton("Zarezerwuj nocleg");
+        JButton bookhotels = new JButton("Zarezerwuj hotel");
         bookhotels.setBounds(0,400,350,50);
         bookhotels.setBackground(new Color(0,0,102));
         bookhotels.setForeground(Color.WHITE);
@@ -196,6 +197,8 @@ public class Dashboard extends JFrame implements ActionListener {
 
         }else if(e.getSource()==viewpackages) {
             new ViewBookedPackage(username);
+        }else if(e.getSource()==viewhotels){
+            new CheckHotels();
         }
     }
 
