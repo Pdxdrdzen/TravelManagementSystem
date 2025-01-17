@@ -1,4 +1,4 @@
-package com.example.TravelManagementSystem;
+package com.travelmanagementsystem;
 import javax.swing.*;
 import javax.swing.text.View;
 import java.awt.*;

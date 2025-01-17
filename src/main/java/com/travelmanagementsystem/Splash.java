@@ -1,5 +1,4 @@
-package com.example.TravelManagementSystem;
-
+package com.travelmanagementsystem;
 import java.awt.*;
 import javax.swing.*;
 public class Splash extends JFrame implements Runnable{
