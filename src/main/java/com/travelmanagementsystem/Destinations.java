@@ -7,15 +7,13 @@ public class Destinations extends JFrame implements Runnable{
     Thread t1;
     JLabel l1,l2,l3,l4,l5,l6,l7,l8,l9,l10;
     JLabel[] label = new JLabel[]{l1,l2,l3,l4,l5,l6,l7,l8,l9,l10};
-    JLabel caption,country;
-    String[] text=new String[]{"The V Luxury Resort","Hilton St. Julian's","Alan Xafira Deluxe Resort","Barcelo Lanzarote Active Resort","Hard Rock Hotel","Fuerteventura Princess Hotel","AP Cabanas Beach & Nature","Hilton Hotel","De L'Europe Hotel","Stella Island Luxury Hotel"};
-    String[] text2=new String[]{"Hurghada, Egipt","Portomaso, Malta","Alanya, Turcja","Las Palmas, Hiszpania","Adeje, Teneryfa","Gran Canaria, Hiszpania","Cabanas, Portugalia","Gdańsk, Polska","Amsterdam, Holandia","Wyspa Stella, Grecja"};
+    JLabel country;
+    String[] text2=new String[]{"Hurghada, Egipt","Portomaso, Malta","Alanya, Turcja","Las Palmas, Hiszpania","Adeje, Teneryfa","Norwegia","Cabanas, Portugalia","Gdańsk, Polska","Amsterdam, Holandia","Kreta, Grecja"};
 
     public void run(){
         try{
             for(int i=0;i<=9;i++){
                 label[i].setVisible(true);
-                caption.setText(text[i]);
                 country.setText(text2[i]);
                 Thread.sleep(2500);
                 label[i].setVisible(false);
@@ -30,11 +28,6 @@ public class Destinations extends JFrame implements Runnable{
     Destinations() {
         setBounds(500,200,800,600);
 
-        caption=new JLabel();
-        caption.setBounds(50,500,1000,70);
-        caption.setFont(new Font("Tahoma",Font.BOLD,40));
-        caption.setForeground(Color.WHITE);
-        add(caption);
 
         country=new JLabel();
         country.setBounds(50,450,1000,70);
@@ -56,7 +49,7 @@ public class Destinations extends JFrame implements Runnable{
 
 
         for(int i=0;i<=9;i++) {
-            image[i]= new ImageIcon(ClassLoader.getSystemResource("ikony/hotel"+(i+1)+".jpg"));
+            image[i]= new ImageIcon(ClassLoader.getSystemResource("ikony/destination"+(i+1)+".jpg"));
             jimage[i]= image[i].getImage().getScaledInstance(800, 600, Image.SCALE_DEFAULT);
             kimage[i] = new ImageIcon(jimage[i]);
             label[i] = new JLabel(kimage[i]);

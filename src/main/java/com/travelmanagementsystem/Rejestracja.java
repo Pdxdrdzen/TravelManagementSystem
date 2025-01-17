@@ -1,4 +1,4 @@
-package com.travelmanagementsystem.;
+package com.travelmanagementsystem;
 
 import javax.swing.*;
 import java.awt.*;
