@@ -8,6 +8,7 @@ import java.awt.event.*;
 
 public class Dashboard extends JFrame implements ActionListener {
     String username;
+    JButton bookhotels;
     JButton addPersonalDetails, viewPersonalDetails, updatePersonalDetails, deletePersonalDetails, checkpackages, bookpackages,viewpackages, viewhotels, destinations;
     Dashboard(String username){
         setExtendedState(JFrame.MAXIMIZED_BOTH);
@@ -108,12 +109,13 @@ public class Dashboard extends JFrame implements ActionListener {
         viewhotels.addActionListener(this);
         p2.add(viewhotels);
 
-        JButton bookhotels = new JButton("Zarezerwuj hotel");
+        bookhotels = new JButton("Zarezerwuj hotel");
         bookhotels.setBounds(0,400,350,50);
         bookhotels.setBackground(new Color(0,0,102));
         bookhotels.setForeground(Color.WHITE);
         bookhotels.setFont(new Font("Tahoma",Font.PLAIN,20));
         bookhotels.setMargin(new Insets(0,0,0,120));
+        bookhotels.addActionListener(this);
         p2.add(bookhotels);
 
         JButton viewBookedHotels = new JButton("Wyswietl swoje rezerwacje ");
@@ -201,6 +203,8 @@ public class Dashboard extends JFrame implements ActionListener {
             new CheckHotels();
         }else if(e.getSource()==destinations){
             new Destinations();
+        }else if(e.getSource()==bookhotels){
+            new BookHotel(username);
         }
     }
 
