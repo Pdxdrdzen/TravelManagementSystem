@@ -15,7 +15,7 @@
         <sonar.projectKey>object-oriented-programming-2_2024_2id12a_project-team6-pdrdzen-mlaszcz_AZLD3tQnI8kAtb7mvIzs</sonar.projectKey>
         <sonar.projectName>Project-Team6-PDrdzen-MLaszcz</sonar.projectName>
         <sonar.projectVersion>${project.version}</sonar.projectVersion>
-        <sonar.sources>src/main/java,src/Travel_Management_System</sonar.sources>
+        <sonar.sources>src/main/java/src/Travel_Management_System</sonar.sources>
         <sonar.tests>src/test/java</sonar.tests>
         <sonar.java.source>17</sonar.java.source>
         <sonar.java.coveragePlugin>jacoco</sonar.java.coveragePlugin>
