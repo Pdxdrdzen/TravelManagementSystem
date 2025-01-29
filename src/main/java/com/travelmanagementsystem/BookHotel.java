@@ -1,287 +1,295 @@
 package com.travelmanagementsystem;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.ItemListener;
-import java.awt.event.ItemEvent;
 import java.sql.*;
 
 public class BookHotel extends JFrame implements ActionListener {
 
-    Choice cpackage, dpackage,cfood;
-    JTextField tfpeople,tfnights;
-    String username;
-    JLabel labelusername,labelid,labelnumber,labelphone, labelprice,labelnights, labelfood;
-    JButton checkprice, bookhotel, back;
-    BookHotel(String username) {
-        this.username=username;
-        setBounds(350,200,1100,500);
+    private static final String FONT_NAME = "Tahoma";
+
+    private final Choice destinationPackage;
+    private final Choice hotelPackage;
+    private final Choice foodChoice;
+
+    private final JTextField peopleTextField;
+    private final JTextField nightsTextField;
+
+    private final String username;
+    private final JLabel usernameLabel;
+    private final JLabel phoneLabel;
+    private final JLabel priceLabel;
+
+    // Initialize buttons as final fields
+    private final JButton checkPrice;
+    private final JButton bookHotelButton;
+    private final JButton back;
+
+    public BookHotel(String username) {
+        this.username = username;
+
+        // Initialize all components in constructor
+        destinationPackage = new Choice();
+        hotelPackage = new Choice();
+        foodChoice = new Choice();
+        peopleTextField = new JTextField("1");
+        nightsTextField = new JTextField("1");
+        usernameLabel = new JLabel();
+        phoneLabel = new JLabel();
+        priceLabel = new JLabel();
+
+        // Initialize buttons
+        checkPrice = new JButton("Sprawdz cene");
+        bookHotelButton = new JButton("Rezerwuj teraz");
+        back = new JButton("Powrot");
+
+        setBounds(350, 200, 1100, 500);
         setLayout(null);
         getContentPane().setBackground(Color.WHITE);
 
         JLabel text = new JLabel("ZAREZERWUJ HOTEL");
-        text.setBounds(100,10,300,30);
-        text.setFont(new Font("Tahoma",Font.BOLD,20));
+        text.setBounds(100, 10, 300, 30);
+        text.setFont(new Font(FONT_NAME, Font.BOLD, 20));
         add(text);
 
-        JLabel lblusername=new JLabel("Nazwa użytkownika");
-        lblusername.setFont(new Font("Tahoma",Font.PLAIN,16));
-        lblusername.setBounds(40,70,150,20);
+        JLabel lblusername = new JLabel("Nazwa użytkownika");
+        lblusername.setFont(new Font(FONT_NAME, Font.PLAIN, 16));
+        lblusername.setBounds(40, 70, 150, 20);
         add(lblusername);
 
-        labelusername=new JLabel();
-        labelusername.setFont(new Font("Tahoma",Font.PLAIN,16));
-        labelusername.setBounds(250,70,100,20);
-        add(labelusername);
+        usernameLabel.setFont(new Font(FONT_NAME, Font.PLAIN, 16));
+        usernameLabel.setBounds(250, 70, 100, 20);
+        add(usernameLabel);
 
-        JLabel lbldestination =new JLabel("Wybierz kierunek ");
-        lbldestination.setFont(new Font("Tahoma",Font.PLAIN,16));
-        lbldestination.setBounds(40,110,150,25);
+        JLabel lbldestination = new JLabel("Wybierz kierunek ");
+        lbldestination.setFont(new Font(FONT_NAME, Font.PLAIN, 16));
+        lbldestination.setBounds(40, 110, 150, 25);
         add(lbldestination);
 
-        dpackage=new Choice();
-        dpackage.add("Hurghada, Egipt");
-        dpackage.add("Portomaso, Malta");
-        dpackage.add("Alanya, Turcja");
-        dpackage.add("Las Palmas, Hiszpania");
-        dpackage.add("Adeje, Teneryfa");
-        dpackage.add("Gran Canaria, Hiszpania");
-        dpackage.add("Cabanas, Portugalia");
-        dpackage.add("Gdańsk, Polska");
-        dpackage.add("Amsterdam, Holandia");
-        dpackage.add("Wyspa Stella, Grecja");
-        dpackage.setBounds(250,110,200,20);
-        add(dpackage);
+        setupDestinations(destinationPackage);
+        destinationPackage.setBounds(250, 110, 200, 20);
+        add(destinationPackage);
 
-
-
-        JLabel lblchoose =new JLabel("Wybierz hotel: ");
-        lblchoose.setFont(new Font("Tahoma",Font.PLAIN,16));
-        lblchoose.setBounds(40,150,120,20);
+        JLabel lblchoose = new JLabel("Wybierz hotel: ");
+        lblchoose.setFont(new Font(FONT_NAME, Font.PLAIN, 16));
+        lblchoose.setBounds(40, 150, 120, 20);
         add(lblchoose);
 
-        cpackage=new Choice();
-        cpackage.setBounds(250, 150, 200, 20);
-        add(cpackage);
+        hotelPackage.setBounds(250, 150, 200, 20);
+        add(hotelPackage);
 
-        dpackage.addItemListener(new ItemListener() {
-            @Override
-            public void itemStateChanged(ItemEvent e) {
-                if (e.getStateChange() == ItemEvent.SELECTED) {
-                    updateHotels();
-                }
-            }
-        });
-        try{
-            Connect c=new Connect();
-            ResultSet rs= c.s.executeQuery("select * from hotel");
-            while(rs.next()){
-                cpackage.add(rs.getString("name"));
-            }
+        destinationPackage.addItemListener(e -> updateHotels());
 
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-
-
-        JLabel lblnights =new JLabel("Liczba nocy ");
-        lblnights.setFont(new Font("Tahoma",Font.PLAIN,16));
-        lblnights.setBounds(40,190,150,20);
+        JLabel lblnights = new JLabel("Liczba nocy ");
+        lblnights.setFont(new Font(FONT_NAME, Font.PLAIN, 16));
+        lblnights.setBounds(40, 190, 150, 20);
         add(lblnights);
 
-        tfnights=new JTextField("1");
-        tfnights.setBounds(250,190,200,20);
-        add(tfnights);
+        nightsTextField.setBounds(250, 190, 200, 20);
+        add(nightsTextField);
 
-        JLabel lblpeople =new JLabel("Liczba osob: ");
-        lblpeople.setFont(new Font("Tahoma",Font.PLAIN,16));
-        lblpeople.setBounds(40,230,150,20);
+        JLabel lblpeople = new JLabel("Liczba osob: ");
+        lblpeople.setFont(new Font(FONT_NAME, Font.PLAIN, 16));
+        lblpeople.setBounds(40, 230, 150, 20);
         add(lblpeople);
 
-        tfpeople=new JTextField("1");
-        tfpeople.setBounds(250,230,200,20);
-        add(tfpeople);
+        peopleTextField.setBounds(250, 230, 200, 20);
+        add(peopleTextField);
 
-
-        JLabel lblfood =new JLabel("Pełne wyżywienie:");
-        lblfood.setFont(new Font("Tahoma",Font.PLAIN,16));
-        lblfood.setBounds(40,270,150,25);
+        JLabel lblfood = new JLabel("Pełne wyżywienie:");
+        lblfood.setFont(new Font(FONT_NAME, Font.PLAIN, 16));
+        lblfood.setBounds(40, 270, 150, 25);
         add(lblfood);
 
-        cfood=new Choice();
-        cfood.add("Tak");
-        cfood.add("Nie");
-        cfood.setBounds(250,270,200,20);
-        add(cfood);
+        foodChoice.add("Tak");
+        foodChoice.add("Nie");
+        foodChoice.setBounds(250, 270, 200, 20);
+        add(foodChoice);
 
-        JLabel lblphone =new JLabel("Numer kontaktowy: ");
-        lblphone.setFont(new Font("Tahoma",Font.PLAIN,16));
-        lblphone.setBounds(40,310,150,20);
+        JLabel lblphone = new JLabel("Numer kontaktowy: ");
+        lblphone.setFont(new Font(FONT_NAME, Font.PLAIN, 16));
+        lblphone.setBounds(40, 310, 150, 20);
         add(lblphone);
 
-        labelphone=new JLabel();
-        labelphone.setFont(new Font("Tahoma",Font.PLAIN,16));
-        labelphone.setBounds(250,310,200,20);
-        add(labelphone);
+        phoneLabel.setFont(new Font(FONT_NAME, Font.PLAIN, 16));
+        phoneLabel.setBounds(250, 310, 200, 20);
+        add(phoneLabel);
 
-
-
-        JLabel lbprice =new JLabel("Koszt: ");
-        lbprice.setFont(new Font("Tahoma",Font.PLAIN,16));
-        lbprice.setBounds(40,350,150,20);
+        JLabel lbprice = new JLabel("Koszt: ");
+        lbprice.setFont(new Font(FONT_NAME, Font.PLAIN, 16));
+        lbprice.setBounds(40, 350, 150, 20);
         add(lbprice);
 
-        labelprice =new JLabel();
-        labelprice.setBounds(250,350,200,25);
-        add(labelprice);
+        priceLabel.setBounds(250, 350, 200, 25);
+        add(priceLabel);
 
-        try{
-            Connect con=new Connect();
-            String query="select*from customer where username='"+username+"'";
-            ResultSet rs=con.s.executeQuery(query);
-            while(rs.next()){
-                labelusername.setText(rs.getString("username"));
-                labelphone.setText(rs.getString("phone"));
+        loadCustomerData();
+        setupButtons();
+        setupImage();
+        setVisible(true);
+    }
 
+    private void setupDestinations(Choice destinationPackage) {
+        destinationPackage.add("Hurghada, Egipt");
+        destinationPackage.add("Portomaso, Malta");
+        destinationPackage.add("Alanya, Turcja");
+        destinationPackage.add("Las Palmas, Hiszpania");
+        destinationPackage.add("Adeje, Teneryfa");
+        destinationPackage.add("Gran Canaria, Hiszpania");
+        destinationPackage.add("Cabanas, Portugalia");
+        destinationPackage.add("Gdańsk, Polska");
+        destinationPackage.add("Amsterdam, Holandia");
+        destinationPackage.add("Wyspa Stella, Grecja");
+    }
 
-            }
+    private void setupButtons() {
+        checkPrice.setBackground(Color.BLACK);
+        checkPrice.setForeground(Color.WHITE);
+        checkPrice.setBounds(60, 380, 120, 25);
+        checkPrice.addActionListener(this);
+        add(checkPrice);
 
-        }catch(Exception e){
-            e.printStackTrace();
-        }
-        checkprice=new JButton("Sprawdz cene");
-        checkprice.setBackground(Color.BLACK);
-        checkprice.setForeground(Color.WHITE);
-        checkprice.setBounds(60,380,120,25);
-        checkprice.addActionListener(this);
-        add(checkprice);
+        bookHotelButton.setBackground(Color.BLACK);
+        bookHotelButton.setForeground(Color.WHITE);
+        bookHotelButton.setBounds(200, 380, 120, 25);
+        bookHotelButton.addActionListener(this);
+        add(bookHotelButton);
 
-        bookhotel =new JButton("Rezerwuj teraz");
-        bookhotel.setBackground(Color.BLACK);
-        bookhotel.setForeground(Color.WHITE);
-        bookhotel.setBounds(200,380,120,25);
-        bookhotel.addActionListener(this);
-        add(bookhotel);
-
-        back=new JButton("Powrot");
         back.setBackground(Color.BLACK);
         back.setForeground(Color.WHITE);
-        back.setBounds(340,380,120,25);
+        back.setBounds(340, 380, 120, 25);
         back.addActionListener(this);
         add(back);
+    }
 
-        ImageIcon i1=new ImageIcon(ClassLoader.getSystemResource("ikony/bookpackage.jpg"));
-        Image i2=i1.getImage().getScaledInstance(500,300,Image.SCALE_SMOOTH);
-        ImageIcon i3=new ImageIcon(i2);
-        JLabel l14=new JLabel(i3);
-        l14.setBounds(550,50,500,300);
+    private void setupImage() {
+        ImageIcon i1 = new ImageIcon(ClassLoader.getSystemResource("ikony/bookpackage.jpg"));
+        Image i2 = i1.getImage().getScaledInstance(500, 300, Image.SCALE_SMOOTH);
+        ImageIcon i3 = new ImageIcon(i2);
+        JLabel l14 = new JLabel(i3);
+        l14.setBounds(550, 50, 500, 300);
         add(l14);
-
-
-
-
-
-
-        setVisible(true);
-
-
     }
-    public void updateHotels(){
-        cpackage.removeAll();
 
-        String selectedDestination=dpackage.getSelectedItem();
+    private void loadCustomerData() {
+        try (Connect con = new Connect();
+             PreparedStatement stmt = con.prepareStatement(
+                     "SELECT username, phone FROM customer WHERE username = ?")) {
+            stmt.setString(1, username);
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    usernameLabel.setText(rs.getString("username"));
+                    phoneLabel.setText(rs.getString("phone"));
+                }
+            }
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(this, "Error loading customer data: " + e.getMessage());
+        }
+    }
+    public void updateHotels() {
+        hotelPackage.removeAll();
+        String selectedDestination = destinationPackage.getSelectedItem();
 
-        switch(selectedDestination) {
+        switch (selectedDestination) {
             case "Hurghada, Egipt":
-                cpackage.add("The V Luxury Resort");
+                hotelPackage.add("The V Luxury Resort");
                 break;
-
             case "Portomaso, Malta":
-                cpackage.add("Hilton St. Julian's");
+                hotelPackage.add("Hilton St. Julian's");
                 break;
-
             case "Alanya, Turcja":
-                cpackage.add("Alan Xafira Deluxe Resort");
+                hotelPackage.add("Alan Xafira Deluxe Resort");
                 break;
-
             case "Las Palmas, Hiszpania":
-                cpackage.add("Barcelo Lanzarote Active Resort");
+                hotelPackage.add("Barcelo Lanzarote Active Resort");
                 break;
-
             case "Adeje, Teneryfa":
-                cpackage.add("Hard Rock Hotel");
+                hotelPackage.add("Hard Rock Hotel");
                 break;
-
             case "Gran Canaria, Hiszpania":
-                cpackage.add("Fuerteventura Princess Hotel");
+                hotelPackage.add("Fuerteventura Princess Hotel");
                 break;
-
             case "Cabanas, Portugalia":
-                cpackage.add("AP Cabanas Beach & Nature");
-                        break;
+                hotelPackage.add("AP Cabanas Beach & Nature");
+                break;
             case "Gdańsk, Polska":
-                cpackage.add("Hilton Hotel");
+                hotelPackage.add("Hilton Hotel");
                 break;
-
             case "Amsterdam, Holandia":
-                cpackage.add("De L'Europe Hotel");
+                hotelPackage.add("De L'Europe Hotel");
                 break;
-
             case "Wyspa Stella, Grecja":
-                cpackage.add("Stella Island Luxury Hotel");
+                hotelPackage.add("Stella Island Luxury Hotel");
                 break;
-
+            default:
+                hotelPackage.add("No hotels available");
+                break;
         }
-
     }
-    public void actionPerformed(ActionEvent ae){
-        if(ae.getSource()==checkprice) {
-            try{
-            Connect c = new Connect();
-            ResultSet rs = c.s.executeQuery("select*from hotel where name='" + cpackage.getSelectedItem() + "'");
-            while(rs.next()) {
-                 int cost=Integer.parseInt(rs.getString("costperperson"));
-                 int food=Integer.parseInt(rs.getString("food"));
-                 int people=Integer.parseInt(tfpeople.getText());
-                 int nights=Integer.parseInt(tfnights.getText());
-                 String foodselected=cfood.getSelectedItem();
 
-                 if(people*nights>0){
-                     int total=0;
-                     total+=foodselected.equals("Tak") ? food:0;
-                     total+=cost;
-                     total=total*people*nights;
-                     labelprice.setText(total+" Zł");
-                 }else{
-                     JOptionPane.showMessageDialog(null,"Prosze wprowadz poprawna liczbe");
-                 }
+    private void calculatePrice() {
+        try (Connect c = new Connect();
+             PreparedStatement stmt = c.prepareStatement(
+                     "SELECT costperperson, food FROM hotel WHERE name = ?")) {
+            stmt.setString(1, hotelPackage.getSelectedItem());
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    int cost = Integer.parseInt(rs.getString("costperperson"));
+                    int food = Integer.parseInt(rs.getString("food"));
+                    int people = Integer.parseInt(peopleTextField.getText());
+                    int nights = Integer.parseInt(nightsTextField.getText());
+                    String foodselected = foodChoice.getSelectedItem();
+
+                    if (people * nights > 0) {
+                        int total = 0;
+                        total += "Tak".equals(foodselected) ? food : 0;
+                        total += cost;
+                        total = total * people * nights;
+                        priceLabel.setText(total + " Zł");
+                    } else {
+                        JOptionPane.showMessageDialog(null, "Prosze wprowadz poprawna liczbe");
+                    }
+                }
             }
-
-
-
-
-        }catch(Exception e){
-            e.printStackTrace();}
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(this, "Blad przeliczania kwoty: " + e.getMessage());
         }
-            else if(ae.getSource()== bookhotel){
-            try{
-                Connect con=new Connect();
-                con.s.executeUpdate("insert into bookhotel values('"+labelusername.getText()+"','"+dpackage.getSelectedItem()+"','"+cpackage.getSelectedItem()+"','"+tfpeople.getText()+"','"+cfood.getSelectedItem()+"','"+labelphone.getText()+"','"+labelprice.getText()+"')");
+    }
 
-                JOptionPane.showMessageDialog(null,"Oferta zarezerwowana z sukcesem!");
-                setVisible(false);
-            }catch(Exception e){
-                e.printStackTrace();
-            }
+    private void bookHotel() {
+        try (Connect con = new Connect();
+             PreparedStatement stmt = con.prepareStatement(
+                     "INSERT INTO bookhotel (username, destination, hotel, people, food, phone, price) VALUES (?, ?, ?, ?, ?, ?, ?)")) {
+            stmt.setString(1, usernameLabel.getText());
+            stmt.setString(2, destinationPackage.getSelectedItem());
+            stmt.setString(3, hotelPackage.getSelectedItem());
+            stmt.setString(4, peopleTextField.getText());
+            stmt.setString(5, foodChoice.getSelectedItem());
+            stmt.setString(6, phoneLabel.getText());
+            stmt.setString(7, priceLabel.getText());
 
-        }else {
+            stmt.executeUpdate();
+            JOptionPane.showMessageDialog(null, "Oferta zarezerwowana z sukcesem!");
+            setVisible(false);
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(this, "Blad rezerwacji hotelu: " + e.getMessage());
+        }
+    }
 
+    @Override
+    public void actionPerformed(ActionEvent ae) {
+        if (ae.getSource() == checkPrice) {
+            calculatePrice();
+        } else if (ae.getSource() == bookHotelButton) {
+            bookHotel();
+        } else {
             setVisible(false);
         }
     }
+
     public static void main(String[] args) {
-        new BookHotel("");
+        SwingUtilities.invokeLater(() -> new BookHotel(""));
     }
 }

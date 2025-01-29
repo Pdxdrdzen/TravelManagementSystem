@@ -187,7 +187,7 @@ public class Dashboard extends JFrame implements ActionListener {
     }
     public void actionPerformed(ActionEvent e) {
         if(e.getSource()==addPersonalDetails){
-            new AddCustomer(username);
+            new AddCustomer();
         }else if(e.getSource()==viewPersonalDetails){
             new ViewCustomer(username);
         }else if(e.getSource()==updatePersonalDetails){
