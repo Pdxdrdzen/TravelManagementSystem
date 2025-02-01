@@ -6,7 +6,7 @@ import java.awt.event.ActionListener;
 
 
 public class Dashboard extends JFrame implements ActionListener {
-    private String username;
+    private final String username;
     JButton bookhotels;
     JButton addPersonalDetails;
     JButton viewPersonalDetails;
@@ -224,7 +224,7 @@ public class Dashboard extends JFrame implements ActionListener {
         handleUtilities(source);
     }
 
-    private boolean handlePersonalDetails(Object source) {
+    public boolean handlePersonalDetails(Object source) {
         if (source == addPersonalDetails) {
             new AddCustomer(this.username);
             return true;
@@ -244,7 +244,7 @@ public class Dashboard extends JFrame implements ActionListener {
         return false;
     }
 
-    private boolean handlePackages(Object source) {
+    public boolean handlePackages(Object source) {
         if (source == checkpackages) {
             new CheckPackage();
             return true;
@@ -260,7 +260,7 @@ public class Dashboard extends JFrame implements ActionListener {
         return false;
     }
 
-    private boolean handleHotels(Object source) {
+    public boolean handleHotels(Object source) {
         if (source == viewhotels) {
             new CheckHotels();
             return true;
@@ -280,7 +280,7 @@ public class Dashboard extends JFrame implements ActionListener {
         return false;
     }
 
-    private void handleUtilities(Object source) {
+    public void handleUtilities(Object source) {
         if (source == payments) {
             new Payment();
         } else if (source == calculators) {
@@ -292,7 +292,7 @@ public class Dashboard extends JFrame implements ActionListener {
         }
     }
 
-    private void launchCalculator() {
+    public void launchCalculator() {
         try {
             ProcessBuilder processBuilder = new ProcessBuilder("calc.exe");
             processBuilder.start();
@@ -301,7 +301,7 @@ public class Dashboard extends JFrame implements ActionListener {
         }
     }
 
-    private void launchNotepad() {
+    public void launchNotepad() {
         try {
             ProcessBuilder processBuilder = new ProcessBuilder("notepad.exe");
             processBuilder.start();
