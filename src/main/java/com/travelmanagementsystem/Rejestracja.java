@@ -125,8 +125,7 @@ if(e.getSource()==create){
     String password2=new String(tfpassword2.getPassword());
 
     String query = "insert into users(name,username,password) values ('"+name+"','"+username+"','"+password1+"')";
-    try {
-        Connect c=new Connect();
+    try(Connect c=new Connect()) {
         c.s.executeUpdate(query);
         JOptionPane.showMessageDialog(null,"Konto utworzone z sukcesem!");
     }catch(Exception e1){

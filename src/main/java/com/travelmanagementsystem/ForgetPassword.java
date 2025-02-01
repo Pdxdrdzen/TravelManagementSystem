@@ -90,22 +90,20 @@ public class ForgetPassword extends JFrame implements ActionListener {
     }
     public void actionPerformed(ActionEvent ae) {
         if (ae.getSource() == forget) {
-            try {
-                String username = tfusername.getText();
-                String newPassword = tfpassword.getText();
+            String username = tfusername.getText();
+            String newPassword = tfpassword.getText();
 
-                if (username.isEmpty() || newPassword.isEmpty()) {
-                    JOptionPane.showMessageDialog(null, "Nazwa uzytkownika lub hasla sa puste!", "Error", JOptionPane.ERROR_MESSAGE);
-                    return;
-                }
+            if (username.isEmpty() || newPassword.isEmpty()) {
+                JOptionPane.showMessageDialog(null, "Nazwa uzytkownika lub hasla sa puste!", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
 
+            try (Connect c = new Connect();
+                 PreparedStatement selectStmt = c.c.prepareStatement("SELECT * FROM users WHERE username = ?");
+                 PreparedStatement updateStmt = c.c.prepareStatement("UPDATE users SET password = ? WHERE username = ?")) {
 
-                String selectQuery = "SELECT * FROM users WHERE username = ?";
-                Connect c = new Connect();
-
-                PreparedStatement selectStmt = c.c.prepareStatement(selectQuery);
+                // Sprawdzanie czy użytkownik istnieje
                 selectStmt.setString(1, username);
-
                 ResultSet rs = selectStmt.executeQuery();
 
                 if (!rs.isBeforeFirst()) {
@@ -113,9 +111,7 @@ public class ForgetPassword extends JFrame implements ActionListener {
                     return;
                 }
 
-
-                String updateQuery = "UPDATE users SET password = ? WHERE username = ?";
-                PreparedStatement updateStmt = c.c.prepareStatement(updateQuery);
+                // Aktualizacja hasła
                 updateStmt.setString(1, newPassword);
                 updateStmt.setString(2, username);
 
@@ -131,7 +127,7 @@ public class ForgetPassword extends JFrame implements ActionListener {
                 e.printStackTrace();
                 JOptionPane.showMessageDialog(null, "ERROR!", "Error", JOptionPane.ERROR_MESSAGE);
             }
-        }else{
+        } else {
             setVisible(false);
             new Login();
         }

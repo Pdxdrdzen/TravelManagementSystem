@@ -142,9 +142,8 @@ public class AddCustomer extends JFrame implements ActionListener {
     }
 
     private void loadUserData() {
-        Connect con = new Connect();
         ResultSet rs = null;
-        try {
+        try(Connect con=new Connect()) {
             rs = con.s.executeQuery("SELECT username, name FROM users WHERE username = '"+username+"'");
             if (rs.next()) {
                 labelusername.setText(rs.getString("username"));
@@ -182,9 +181,9 @@ public class AddCustomer extends JFrame implements ActionListener {
             gender = "Other";
         }
 
-        Connect con = new Connect();
+
         PreparedStatement pstmt = null;
-        try {
+        try(Connect con = new Connect()) {
             String query = "INSERT INTO customer VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)";
             Connection conn = con.s.getConnection();
             pstmt = conn.prepareStatement(query);

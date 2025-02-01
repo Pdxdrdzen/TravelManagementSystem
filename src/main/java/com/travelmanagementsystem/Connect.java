@@ -1,6 +1,8 @@
 package com.travelmanagementsystem;
 
 import java.sql.*;
+import java.util.Properties;
+import java.io.InputStream;
 
 public class Connect implements AutoCloseable {
     Connection c;
@@ -8,8 +10,17 @@ public class Connect implements AutoCloseable {
 
     Connect() {
         try {
+            Properties props = new Properties();
+            try (InputStream in = getClass().getClassLoader().getResourceAsStream("database.properties")) {
+                props.load(in);
+            }
+
+            String url = props.getProperty("db.url");
+            String user = props.getProperty("db.user");
+            String password = props.getProperty("db.password");
+
             Class.forName("com.mysql.cj.jdbc.Driver");
-            c = DriverManager.getConnection("jdbc:mysql://localhost:3306/travel_agency", "root", "Kochamkk123.");
+            c = DriverManager.getConnection(url, user, password);
             s = c.createStatement();
         } catch(Exception e) {
             e.printStackTrace();
