@@ -25,7 +25,10 @@ public class AddCustomer extends JFrame implements ActionListener {
     private final JButton add;
     private final JButton back;
 
-    public AddCustomer() {
+    String username;
+
+    public AddCustomer(String username) {
+        this.username=username;
         setTitle("Dodaj klienta");
         setBounds(450, 200, 850, 550);
         setLayout(null);
@@ -142,7 +145,7 @@ public class AddCustomer extends JFrame implements ActionListener {
         Connect con = new Connect();
         ResultSet rs = null;
         try {
-            rs = con.s.executeQuery("SELECT username, name FROM users WHERE username = 'pdrdzen'");
+            rs = con.s.executeQuery("SELECT username, name FROM users WHERE username = '"+username+"'");
             if (rs.next()) {
                 labelusername.setText(rs.getString("username"));
                 labelname.setText(rs.getString("name"));
@@ -154,7 +157,7 @@ public class AddCustomer extends JFrame implements ActionListener {
                 try {
                     rs.close();
                 } catch (SQLException e) {
-                    // Log the error if needed
+                    e.printStackTrace();
                 }
             }
         }
@@ -213,7 +216,4 @@ public class AddCustomer extends JFrame implements ActionListener {
         }
     }
 
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(AddCustomer::new);
-    }
 }

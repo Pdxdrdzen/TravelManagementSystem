@@ -101,8 +101,7 @@ public class ViewCustomer extends JFrame implements ActionListener {
         image.setBounds(120,400,600,200);
         add(image);
 
-        try{
-            Connect con=new Connect();
+        try(Connect con=new Connect()){
             String query="select*from customer where username='"+username+"'";
             ResultSet rs=con.s.executeQuery(query);
             while(rs.next()){
@@ -132,8 +131,5 @@ public class ViewCustomer extends JFrame implements ActionListener {
     }
     public void actionPerformed(ActionEvent ae){
         setVisible(false);
-    }
-    public static void main(String[] args) {
-        new ViewCustomer("pdrdzen");
     }
 }

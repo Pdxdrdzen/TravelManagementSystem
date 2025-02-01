@@ -90,10 +90,9 @@ public class ViewBookedPackage extends JFrame implements ActionListener {
         image.setBounds(450,20,500,400);
         add(image);
 
-        try{
-            Connect con=new Connect();
+        try(Connect conn=new Connect()){
             String query="select*from bookpackage where username='"+username+"'";
-            ResultSet rs=con.s.executeQuery(query);
+            ResultSet rs=conn.s.executeQuery(query);
             while(rs.next()){
                 labelusername.setText(rs.getString("username"));
                 labeloffer.setText(rs.getString("package"));
@@ -120,8 +119,4 @@ public class ViewBookedPackage extends JFrame implements ActionListener {
         setVisible(false);
     }
 
-
-    public static void main(String[] args) {
-        new ViewBookedPackage("");
-    }
 }

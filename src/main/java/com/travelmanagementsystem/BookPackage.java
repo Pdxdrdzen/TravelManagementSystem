@@ -6,12 +6,21 @@ import java.awt.event.ActionListener;
 import java.sql.*;
 
 public class BookPackage extends JFrame implements ActionListener {
+    private static final String FONT_NAME = "Tahoma";
+
 
     Choice cpackage;
     JTextField tfpeople;
     String username;
-    JLabel labelusername,labelid,labelnumber,labelphone, labelprice;
-    JButton checkprice, bookpackage, back;
+
+    private JLabel labelusername;
+    private JLabel labelid;
+    private JLabel labelnumber;
+    private JLabel labelphone;
+    private JLabel labelprice;
+    private JButton checkprice;
+    private JButton bookpackageButton;
+    private JButton back;
     BookPackage(String username) {
         this.username=username;
         setBounds(350,200,1100,500);
@@ -20,21 +29,21 @@ public class BookPackage extends JFrame implements ActionListener {
 
         JLabel text = new JLabel("ZAREZERWUJ PAKIET");
         text.setBounds(100,10,300,30);
-        text.setFont(new Font("Tahoma",Font.BOLD,20));
+        text.setFont(new Font(FONT_NAME,Font.BOLD,20));
         add(text);
 
         JLabel lblusername=new JLabel("Nazwa użytkownika");
-        lblusername.setFont(new Font("Tahoma",Font.PLAIN,16));
+        lblusername.setFont(new Font(FONT_NAME,Font.PLAIN,16));
         lblusername.setBounds(40,70,150,20);
         add(lblusername);
 
         labelusername=new JLabel();
-        labelusername.setFont(new Font("Tahoma",Font.PLAIN,16));
+        labelusername.setFont(new Font(FONT_NAME,Font.PLAIN,16));
         labelusername.setBounds(250,70,100,20);
         add(labelusername);
 
         JLabel lblchoose =new JLabel("Wybierz oferte: ");
-        lblchoose.setFont(new Font("Tahoma",Font.PLAIN,16));
+        lblchoose.setFont(new Font(FONT_NAME,Font.PLAIN,16));
         lblchoose.setBounds(40,110,120,20);
         add(lblchoose);
 
@@ -46,7 +55,7 @@ public class BookPackage extends JFrame implements ActionListener {
         add(cpackage);
 
         JLabel lblpeople =new JLabel("Liczba osob");
-        lblpeople.setFont(new Font("Tahoma",Font.PLAIN,16));
+        lblpeople.setFont(new Font(FONT_NAME,Font.PLAIN,16));
         lblpeople.setBounds(40,150,150,25);
         add(lblpeople);
 
@@ -55,7 +64,7 @@ public class BookPackage extends JFrame implements ActionListener {
         add(tfpeople);
 
         JLabel lblid =new JLabel("Rodzaj dokumentu ");
-        lblid.setFont(new Font("Tahoma",Font.PLAIN,16));
+        lblid.setFont(new Font(FONT_NAME,Font.PLAIN,16));
         lblid.setBounds(40,190,150,20);
         add(lblid);
 
@@ -64,7 +73,7 @@ public class BookPackage extends JFrame implements ActionListener {
         add(labelid);
 
         JLabel lblpesel =new JLabel("Pesel: ");
-        lblpesel.setFont(new Font("Tahoma",Font.PLAIN,16));
+        lblpesel.setFont(new Font(FONT_NAME,Font.PLAIN,16));
         lblpesel.setBounds(40,230,150,20);
         add(lblpesel);
 
@@ -74,7 +83,7 @@ public class BookPackage extends JFrame implements ActionListener {
 
 
         JLabel lblphone =new JLabel("Numer kontaktowy");
-        lblphone.setFont(new Font("Tahoma",Font.PLAIN,16));
+        lblphone.setFont(new Font(FONT_NAME,Font.PLAIN,16));
         lblphone.setBounds(40,270,150,25);
         add(lblphone);
 
@@ -83,7 +92,7 @@ public class BookPackage extends JFrame implements ActionListener {
         add(labelphone);
 
         JLabel lbprice =new JLabel("Koszt: ");
-        lbprice.setFont(new Font("Tahoma",Font.PLAIN,16));
+        lbprice.setFont(new Font(FONT_NAME,Font.PLAIN,16));
         lbprice.setBounds(40,310,150,20);
         add(lbprice);
 
@@ -91,10 +100,10 @@ public class BookPackage extends JFrame implements ActionListener {
         labelprice.setBounds(250,310,200,25);
         add(labelprice);
 
-        try{
-            Connect con=new Connect();
+        try(Connect conn=new Connect()){
+
             String query="select*from customer where username='"+username+"'";
-            ResultSet rs=con.s.executeQuery(query);
+            ResultSet rs=conn.s.executeQuery(query);
             while(rs.next()){
                 labelusername.setText(rs.getString("username"));
                 labelid.setText(rs.getString("id"));
@@ -114,12 +123,12 @@ public class BookPackage extends JFrame implements ActionListener {
         checkprice.addActionListener(this);
         add(checkprice);
 
-        bookpackage=new JButton("Rezerwuj teraz");
-        bookpackage.setBackground(Color.BLACK);
-        bookpackage.setForeground(Color.WHITE);
-        bookpackage.setBounds(200,380,120,25);
-        bookpackage.addActionListener(this);
-        add(bookpackage);
+        bookpackageButton =new JButton("Rezerwuj teraz");
+        bookpackageButton.setBackground(Color.BLACK);
+        bookpackageButton.setForeground(Color.WHITE);
+        bookpackageButton.setBounds(200,380,120,25);
+        bookpackageButton.addActionListener(this);
+        add(bookpackageButton);
 
         back=new JButton("Powrot");
         back.setBackground(Color.BLACK);
@@ -163,10 +172,10 @@ public class BookPackage extends JFrame implements ActionListener {
 
 
 
-        }else if(ae.getSource()==bookpackage){
-            try{
-                Connect con=new Connect();
-                con.s.executeUpdate("insert into bookpackage values('"+labelusername.getText()+"','"+cpackage.getSelectedItem()+"','"+tfpeople.getText()+"','"+labelid.getText()+"','"+labelnumber.getText()+"','"+labelphone.getText()+"','"+labelprice.getText()+"')");
+        }else if(ae.getSource()== bookpackageButton){
+            try(Connect conn=new Connect()){
+
+                conn.s.executeUpdate("insert into bookpackage values('"+labelusername.getText()+"','"+cpackage.getSelectedItem()+"','"+tfpeople.getText()+"','"+labelid.getText()+"','"+labelnumber.getText()+"','"+labelphone.getText()+"','"+labelprice.getText()+"')");
 
                 JOptionPane.showMessageDialog(null,"Oferta zarezerwowana z sukcesem!");
                 setVisible(false);
@@ -178,8 +187,5 @@ public class BookPackage extends JFrame implements ActionListener {
 
             setVisible(false);
         }
-    }
-    public static void main(String[] args) {
-        new BookPackage("");
     }
 }

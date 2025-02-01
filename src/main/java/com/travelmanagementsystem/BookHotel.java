@@ -224,7 +224,7 @@ public class BookHotel extends JFrame implements ActionListener {
                 hotelPackage.add("Stella Island Luxury Hotel");
                 break;
             default:
-                hotelPackage.add("No hotels available");
+                hotelPackage.add("Brak dostepnych hoteli");
                 break;
         }
     }
@@ -289,7 +289,4 @@ public class BookHotel extends JFrame implements ActionListener {
         }
     }
 
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> new BookHotel(""));
-    }
 }

@@ -3,6 +3,7 @@ import javax.swing.*;
 import javax.swing.border.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.sql.ResultSet;
 
 public class Login extends javax.swing.JFrame implements ActionListener {
 
@@ -97,12 +98,27 @@ public class Login extends javax.swing.JFrame implements ActionListener {
             new ForgetPassword();
 
         }else if(ae.getSource()==login){
-            setVisible(false);
+            try (Connect c = new Connect()) {
+                String username = tfusername.getText();
+                String password = String.valueOf(tfpassword.getPassword());
 
+                String query = "select * from users where username = '"+username+"' AND password = '"+password+"'";
+                ResultSet rs = c.s.executeQuery(query);
+
+                if(rs.next()) {
+                    setVisible(false);
+                    new Dashboard(username);
+                } else {
+                    JOptionPane.showMessageDialog(null, "Nieprawidłowa nazwa użytkownika lub hasło");
+                }
+            } catch(Exception e) {
+                e.printStackTrace();
+            }
         }
-    }
-    //public static void main(String[] args) {
-      //  new Login();
 
-   // }
+    }
+    public static void main(String[] args) {
+        new Login();
+
+    }
 }

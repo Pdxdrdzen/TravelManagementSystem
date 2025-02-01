@@ -4,8 +4,17 @@ import java.awt.*;
 
 public class Destinations extends JFrame implements Runnable{
 
-    Thread t1;
-    JLabel l1,l2,l3,l4,l5,l6,l7,l8,l9,l10;
+    private transient Thread t1;
+    JLabel l1;
+    JLabel l2;
+    JLabel l3;
+    JLabel l4;
+    JLabel l5;
+    JLabel l6;
+    JLabel l7;
+    JLabel l8;
+    JLabel l9;
+    JLabel l10;
     JLabel[] label = new JLabel[]{l1,l2,l3,l4,l5,l6,l7,l8,l9,l10};
     JLabel country;
     String[] text2=new String[]{"Hurghada, Egipt","Portomaso, Malta","Alanya, Turcja","Las Palmas, Hiszpania","Adeje, Teneryfa","Norwegia","Cabanas, Portugalia","Gdańsk, Polska","Amsterdam, Holandia","Kreta, Grecja"};
@@ -20,7 +29,8 @@ public class Destinations extends JFrame implements Runnable{
             }
 
 
-        }catch(Exception e){
+        }catch(InterruptedException e){
+            Thread.currentThread().interrupt();
             e.printStackTrace();
         }
     }
@@ -35,13 +45,43 @@ public class Destinations extends JFrame implements Runnable{
         country.setForeground(Color.WHITE);
         add(country);
 
-        ImageIcon i1 = null, i2= null , i3= null , i4= null , i5= null , i6= null , i7= null , i8= null , i9= null, i10= null ;
+        ImageIcon i1 = null;
+        ImageIcon i2=null;
+        ImageIcon i3=null;
+        ImageIcon i4=null;
+        ImageIcon i5=null;
+        ImageIcon i6=null;
+        ImageIcon i7=null;
+        ImageIcon i8=null;
+        ImageIcon i9=null;
+        ImageIcon i10=null;
+
         ImageIcon[] image = new ImageIcon[]{i1, i2 , i3 , i4 , i5 , i6 , i7 , i8 , i9, i10 };
 
-        Image j1 = null, j2= null , j3= null , j4= null , j5= null , j6= null , j7= null , j8= null , j9= null, j10= null ;
+        Image j1 = null;
+        Image j2=null;
+        Image j3=null;
+        Image j4=null;
+        Image j5=null;
+        Image j6=null;
+        Image j7=null;
+        Image j8=null;
+        Image j9=null;
+        Image j10=null;
+
+
         Image[] jimage = new Image[]{ j1, j2 , j3 , j4 , j5 , j6 , j7 , j8 , j9, j10 };
 
-        ImageIcon k1 = null, k2= null , k3= null , k4= null , k5= null , k6= null , k7= null , k8= null , k9= null, k10= null ;
+        ImageIcon k1 = null;
+        ImageIcon k2=null;
+        ImageIcon k3=null;
+        ImageIcon k4=null;
+        ImageIcon k5=null;
+        ImageIcon k6=null;
+        ImageIcon k7=null;
+        ImageIcon k8=null;
+        ImageIcon k9=null;
+        ImageIcon k10=null;
         ImageIcon[] kimage = new ImageIcon[]{k1, k2 , k3 , k4 , k5 , k6 , k7 , k8 , k9, k10 };
 
 
@@ -63,8 +103,5 @@ public class Destinations extends JFrame implements Runnable{
         setVisible(true);
 
 
-    }
-    public static void main(String[] args) {
-        new Destinations();
     }
 }

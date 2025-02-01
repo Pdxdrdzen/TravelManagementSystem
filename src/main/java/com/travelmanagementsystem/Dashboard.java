@@ -1,16 +1,30 @@
 package com.travelmanagementsystem;
 import javax.swing.*;
-import javax.swing.text.View;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.*;
+
 
 public class Dashboard extends JFrame implements ActionListener {
-    String username;
+    private String username;
     JButton bookhotels;
-    JButton addPersonalDetails, viewPersonalDetails, updatePersonalDetails, deletePersonalDetails, checkpackages, bookpackages,viewpackages, viewhotels, destinations;
+    JButton addPersonalDetails;
+    JButton viewPersonalDetails;
+    JButton updatePersonalDetails;
+    JButton deletePersonalDetails;
+    JButton checkpackages;
+    JButton bookpackages;
+    JButton viewpackages;
+    JButton viewhotels;
+    JButton destinations;
+    JButton viewBookedHotels;
+    JButton payments;
+    JButton calculators;
+    JButton notepad;
+    JButton wiecej;
+
     Dashboard(String username){
+        this.username = username;
         setExtendedState(JFrame.MAXIMIZED_BOTH);
         setLayout(null);
         JPanel p1 = new JPanel();
@@ -65,12 +79,13 @@ public class Dashboard extends JFrame implements ActionListener {
         viewPersonalDetails.addActionListener(this);
         p2.add(viewPersonalDetails);
 
-        JButton deletePersonalDetails = new JButton("Usun dane osobowe");
+        deletePersonalDetails = new JButton("Usun dane osobowe");
         deletePersonalDetails.setBounds(0,150,300,50);
         deletePersonalDetails.setBackground(new Color(0,0,102));
         deletePersonalDetails.setForeground(Color.WHITE);
         deletePersonalDetails.setFont(new Font("Tahoma",Font.PLAIN,20));
         deletePersonalDetails.setMargin(new Insets(0,0,0,60));
+        deletePersonalDetails.addActionListener(this);
         p2.add(deletePersonalDetails);
 
         checkpackages = new JButton("Sprawdz dostepne wycieczki");
@@ -118,12 +133,13 @@ public class Dashboard extends JFrame implements ActionListener {
         bookhotels.addActionListener(this);
         p2.add(bookhotels);
 
-        JButton viewBookedHotels = new JButton("Wyswietl swoje rezerwacje ");
+        viewBookedHotels = new JButton("Wyswietl swoje rezerwacje ");
         viewBookedHotels.setBounds(0,450,350,50);
         viewBookedHotels.setBackground(new Color(0,0,102));
         viewBookedHotels.setForeground(Color.WHITE);
         viewBookedHotels.setFont(new Font("Tahoma",Font.PLAIN,20));
         viewBookedHotels.setMargin(new Insets(0,0,0,40));
+        viewBookedHotels.addActionListener(this);
         p2.add(viewBookedHotels);
 
         destinations = new JButton("Wyswietl dostepne kierunki");
@@ -132,38 +148,43 @@ public class Dashboard extends JFrame implements ActionListener {
         destinations.setForeground(Color.WHITE);
         destinations.setFont(new Font("Tahoma",Font.PLAIN,20));
         destinations.setMargin(new Insets(0,0,0,40));
+        destinations.addActionListener(this);
         p2.add(destinations);
 
-        JButton payments = new JButton("Twoje platnosci");
+        payments = new JButton("Twoje platnosci");
         payments.setBounds(0,550,350,50);
         payments.setBackground(new Color(0,0,102));
         payments.setForeground(Color.WHITE);
         payments.setFont(new Font("Tahoma",Font.PLAIN,20));
         payments.setMargin(new Insets(0,0,0,140));
+        payments.addActionListener(this);
         p2.add(payments);
 
-        JButton calculators = new JButton("Kalkulator");
+        calculators = new JButton("Kalkulator");
         calculators.setBounds(0,600,350,50);
         calculators.setBackground(new Color(0,0,102));
         calculators.setForeground(Color.WHITE);
         calculators.setFont(new Font("Tahoma",Font.PLAIN,20));
         calculators.setMargin(new Insets(0,0,0,180));
+        calculators.addActionListener(this);
         p2.add(calculators);
 
-        JButton notepad = new JButton("Twoje notatki");
+        notepad = new JButton("Twoje notatki");
         notepad.setBounds(0,650,350,50);
         notepad.setBackground(new Color(0,0,102));
         notepad.setForeground(Color.WHITE);
         notepad.setFont(new Font("Tahoma",Font.PLAIN,20));
         notepad.setMargin(new Insets(0,0,0,160));
+        notepad.addActionListener(this);
         p2.add(notepad);
 
-        JButton wiecej = new JButton("Wiecej");
+        wiecej = new JButton("Wiecej");
         wiecej.setBounds(0,700,350,50);
         wiecej.setBackground(new Color(0,0,102));
         wiecej.setForeground(Color.WHITE);
         wiecej.setFont(new Font("Tahoma",Font.PLAIN,20));
         wiecej.setMargin(new Insets(0,0,0,160));
+        wiecej.addActionListener(this);
         p2.add(wiecej);
 
         ImageIcon i4=new ImageIcon(ClassLoader.getSystemResource("ikony/home_tms.jpg"));
@@ -186,31 +207,109 @@ public class Dashboard extends JFrame implements ActionListener {
         setVisible(true);
     }
     public void actionPerformed(ActionEvent e) {
-        if(e.getSource()==addPersonalDetails){
-            new AddCustomer();
-        }else if(e.getSource()==viewPersonalDetails){
-            new ViewCustomer(username);
-        }else if(e.getSource()==updatePersonalDetails){
-            new UpdateCustomer(username);
-        }else if(e.getSource()==checkpackages){
-            new CheckPackage();
-        }else if(e.getSource()==bookpackages) {
-            new BookPackage(username);
+        Object source = e.getSource();
 
-        }else if(e.getSource()==viewpackages) {
-            new ViewBookedPackage(username);
-        }else if(e.getSource()==viewhotels){
+        if (handlePersonalDetails(source)) {
+            return;
+        }
+
+        if (handlePackages(source)) {
+            return;
+        }
+
+        if (handleHotels(source)) {
+            return;
+        }
+
+        handleUtilities(source);
+    }
+
+    private boolean handlePersonalDetails(Object source) {
+        if (source == addPersonalDetails) {
+            new AddCustomer(this.username);
+            return true;
+        }
+        if (source == viewPersonalDetails) {
+            new ViewCustomer(this.username);
+            return true;
+        }
+        if (source == updatePersonalDetails) {
+            new UpdateCustomer(this.username);
+            return true;
+        }
+        if (source == deletePersonalDetails) {
+            new DeleteDetails(this.username);
+            return true;
+        }
+        return false;
+    }
+
+    private boolean handlePackages(Object source) {
+        if (source == checkpackages) {
+            new CheckPackage();
+            return true;
+        }
+        if (source == bookpackages) {
+            new BookPackage(this.username);
+            return true;
+        }
+        if (source == viewpackages) {
+            new ViewBookedPackage(this.username);
+            return true;
+        }
+        return false;
+    }
+
+    private boolean handleHotels(Object source) {
+        if (source == viewhotels) {
             new CheckHotels();
-        }else if(e.getSource()==destinations){
+            return true;
+        }
+        if (source == bookhotels) {
+            new BookHotel(this.username);
+            return true;
+        }
+        if (source == viewBookedHotels) {
+            new ViewBookedHotel(this.username);
+            return true;
+        }
+        if (source == destinations) {
             new Destinations();
-        }else if(e.getSource()==bookhotels){
-            new BookHotel(username);
+            return true;
+        }
+        return false;
+    }
+
+    private void handleUtilities(Object source) {
+        if (source == payments) {
+            new Payment();
+        } else if (source == calculators) {
+            launchCalculator();
+        } else if (source == notepad) {
+            launchNotepad();
+        } else if (source == wiecej) {
+            new About();
         }
     }
 
-    public static void main(String[] args){
-        new Dashboard("");
+    private void launchCalculator() {
+        try {
+            ProcessBuilder processBuilder = new ProcessBuilder("calc.exe");
+            processBuilder.start();
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
     }
+
+    private void launchNotepad() {
+        try {
+            ProcessBuilder processBuilder = new ProcessBuilder("notepad.exe");
+            processBuilder.start();
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
+
 
 
 }

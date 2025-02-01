@@ -8,11 +8,19 @@ import java.sql.*;
 
 public class UpdateCustomer extends JFrame implements ActionListener {
 
-    JComboBox comboID;
-    JLabel labelusername,labelname;
-    JTextField tfusername,tfName, tfNumber, tfCountry,tfAddress,tfPhone,tfEmail, tfID, tfGender;
-    JRadioButton rmale,rfemale,rother;
-    JButton add,back,update;
+    JLabel labelusername;
+    JLabel labelname;
+    JTextField tfusername;
+    JTextField tfName;
+    JTextField tfNumber;
+    JTextField tfCountry;
+    JTextField tfAddress;
+    JTextField tfPhone;
+    JTextField tfEmail;
+    JTextField tfID;
+    JTextField tfGender;
+    JButton back;
+    JButton update;
     UpdateCustomer(String username){
         setTitle("Aktualizuj dane klienta");
         setBounds(500,200,850,550);
@@ -112,9 +120,9 @@ public class UpdateCustomer extends JFrame implements ActionListener {
         back.addActionListener(this);
         add(back);
 
-        try{
-            Connect con = new Connect();
-            ResultSet rs= con.s.executeQuery("select * from customer where username = '"+username+"' ");
+        try(Connect conn=new Connect()){
+
+            ResultSet rs= conn.s.executeQuery("select * from customer where username = '"+username+"' ");
             while(rs.next()){
                 labelusername.setText(rs.getString("username"));
                 labelname.setText(rs.getString("name"));
@@ -152,10 +160,9 @@ public class UpdateCustomer extends JFrame implements ActionListener {
             String phone=tfPhone.getText();
             String email=tfEmail.getText();
 
-            try{
-                Connect con = new Connect();
+            try(Connect conn=new Connect()){
                 String query="update customer set username= '"+username+"', id = '"+customerId+"', number = '"+number+ "', name ='"+name+"', gender ='"+gender+"', country ='"+country+"', address ='"+address+"', phone ='"+phone+"', email ='"+email+"'";
-                con.s.executeUpdate(query);
+                conn.s.executeUpdate(query);
 
                 JOptionPane.showMessageDialog(null,"Dane klienta zaktualizowane poprawnie");
                 setVisible(false);
@@ -171,9 +178,6 @@ public class UpdateCustomer extends JFrame implements ActionListener {
 
 
         }
-    }
-    public static void main(String[] args) {
-        new UpdateCustomer("pdrdzen");
     }
 
 }

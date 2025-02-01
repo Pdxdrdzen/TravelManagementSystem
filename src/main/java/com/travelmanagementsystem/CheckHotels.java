@@ -72,7 +72,4 @@ public class CheckHotels extends JFrame implements Runnable {
         setVisible(true);
     }
 
-    public static void main(String[] args) {
-        new CheckHotels();
-    }
 }
