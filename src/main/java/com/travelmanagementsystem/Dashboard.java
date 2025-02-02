@@ -22,6 +22,9 @@ public class Dashboard extends JFrame implements ActionListener {
     JButton calculators;
     JButton notepad;
     JButton wiecej;
+    protected Connect createConnect() {
+    return new Connect();
+}
 
     Dashboard(String username){
         this.username = username;
