@@ -39,24 +39,27 @@ class BookHotelTest {
     private BookHotel bookHotel;
 
     @BeforeEach
-    public void setUp() throws SQLException {
-        MockitoAnnotations.openMocks(this);
+public void setUp() throws SQLException {
+    MockitoAnnotations.openMocks(this);
 
-        // Mockowanie Connect
-        when(mockConnect.prepareStatement(anyString())).thenReturn(mockPreparedStatement);
-        when(mockPreparedStatement.executeQuery()).thenReturn(mockResultSet);
-        when(mockPreparedStatement.executeUpdate()).thenReturn(1);
-        when(mockResultSet.next()).thenReturn(true);
-        when(mockResultSet.getString("username")).thenReturn("TestUser");
-        when(mockResultSet.getString("phone")).thenReturn("123456789");
+    
+    when(mockConnect.prepareStatement(anyString())).thenReturn(mockPreparedStatement);
+    when(mockPreparedStatement.executeQuery()).thenReturn(mockResultSet);
+    when(mockPreparedStatement.executeUpdate()).thenReturn(1);
+    
+    
+    doReturn(mockConnect).when(mockConnect).createConnect();
+    
+    when(mockResultSet.next()).thenReturn(true);
+    when(mockResultSet.getString("username")).thenReturn("TestUser");
+    when(mockResultSet.getString("phone")).thenReturn("123456789");
 
-        // Inicjalizacja BookHotel z mockami
-        bookHotel = spy(new BookHotel("TestUser") {
-            @Override
-            protected Connect createConnect() {
-                return mockConnect;
-            }
-        });
+    bookHotel = spy(new BookHotel("TestUser") {
+        @Override
+        protected Connect createConnect() {
+            return mockConnect;
+        }
+    });
 
         // Przypisanie mocków do pól BookHotel
         bookHotel.usernameLabel = mockUsernameLabel;
