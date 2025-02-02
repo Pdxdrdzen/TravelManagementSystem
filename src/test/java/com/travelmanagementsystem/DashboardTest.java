@@ -2,11 +2,31 @@ package com.travelmanagementsystem;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+
 import static org.junit.jupiter.api.Assertions.*;
 
+@ExtendWith(MockitoExtension.class) // Użyj Mockito z JUnit 5
 class DashboardTest {
 
-    private Dashboard dashboard;
+    @Mock
+    private Connection mockConnection; // Mock połączenia z bazą danych
+
+    @Mock
+    private PreparedStatement mockPreparedStatement; // Mock PreparedStatement
+
+    @Mock
+    private ResultSet mockResultSet; // Mock ResultSet
+
+    @InjectMocks
+    private Dashboard dashboard; // Wstrzyknij mocki do Dashboard
 
     @BeforeEach
     void setUp() {
@@ -49,8 +69,6 @@ class DashboardTest {
         assertDoesNotThrow(() -> dashboard.handleUtilities(dashboard.calculators));
         assertDoesNotThrow(() -> dashboard.handleUtilities(dashboard.notepad));
         assertDoesNotThrow(() -> dashboard.handleUtilities(dashboard.wiecej));
-
-        // Możesz także dodać sprawdzenie stanu obiektu po wywołaniu metodymienną lub efekt działania metody
     }
 
     @Test
@@ -64,4 +82,5 @@ class DashboardTest {
         // Testowanie metody launchNotepad
         assertDoesNotThrow(() -> dashboard.launchNotepad());
     }
+
 }

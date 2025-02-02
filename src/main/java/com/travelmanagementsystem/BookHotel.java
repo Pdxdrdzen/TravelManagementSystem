@@ -10,17 +10,17 @@ public class BookHotel extends JFrame implements ActionListener {
 
     private static final String FONT_NAME = "Tahoma";
 
-    private final Choice destinationPackage;
-    private final Choice hotelPackage;
-    private final Choice foodChoice;
+    Choice destinationPackage;
+    Choice hotelPackage;
+    Choice foodChoice;
 
-    private final JTextField peopleTextField;
-    private final JTextField nightsTextField;
+    JTextField peopleTextField;
+    JTextField nightsTextField;
 
     private final String username;
-    private final JLabel usernameLabel;
-    private final JLabel phoneLabel;
-    private final JLabel priceLabel;
+    JLabel usernameLabel;
+    JLabel phoneLabel;
+    JLabel priceLabel;
 
     // Initialize buttons as final fields
     private final JButton checkPrice;
@@ -173,7 +173,7 @@ public class BookHotel extends JFrame implements ActionListener {
         add(l14);
     }
 
-    private void loadCustomerData() {
+    void loadCustomerData() {
         try (Connect con = new Connect();
              PreparedStatement stmt = con.prepareStatement(
                      "SELECT username, phone FROM customer WHERE username = ?")) {
@@ -229,7 +229,7 @@ public class BookHotel extends JFrame implements ActionListener {
         }
     }
 
-    private void calculatePrice() {
+    void calculatePrice() {
         try (Connect c = new Connect();
              PreparedStatement stmt = c.prepareStatement(
                      "SELECT costperperson, food FROM hotel WHERE name = ?")) {
@@ -258,8 +258,8 @@ public class BookHotel extends JFrame implements ActionListener {
         }
     }
 
-    private void bookHotel() {
-        try (Connect con = new Connect();
+    void bookHotel() {
+        try (Connect con = createConnect();
              PreparedStatement stmt = con.prepareStatement(
                      "INSERT INTO bookhotel (username, destination, hotel, people, food, phone, price) VALUES (?, ?, ?, ?, ?, ?, ?)")) {
             stmt.setString(1, usernameLabel.getText());
@@ -278,6 +278,7 @@ public class BookHotel extends JFrame implements ActionListener {
         }
     }
 
+
     @Override
     public void actionPerformed(ActionEvent ae) {
         if (ae.getSource() == checkPrice) {
@@ -289,4 +290,30 @@ public class BookHotel extends JFrame implements ActionListener {
         }
     }
 
+    public Choice getDestinationPackage() {
+        return destinationPackage;
+    }
+
+    public Choice getHotelPackage() {
+        return hotelPackage;
+    }
+
+    public JTextField getPeopleTextField() {
+        return peopleTextField;
+    }
+
+    public JTextField getNightsTextField() {
+        return nightsTextField;
+    }
+
+    public Choice getFoodChoice() {
+        return foodChoice;
+    }
+
+    public JLabel getPriceLabel() {
+        return priceLabel;
+    }
+    protected Connect createConnect() {
+        return new Connect();
+    }
 }
