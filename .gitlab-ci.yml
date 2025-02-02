@@ -38,7 +38,7 @@ test:
     - apt-get install -y xvfb libxrender1 libxtst6 libxi6
     - Xvfb :99 -screen 0 1024x768x16 &
     - echo "Testing the code..."
-    - mvn $MAVEN_CLI_OPTS $MAVEN_OPTS -Djava.awt.headless=true test
+    - mvn $MAVEN_CLI_OPTS $MAVEN_OPTS test
     - mvn $MAVEN_CLI_OPTS $MAVEN_OPTS jacoco:report
     - echo "Test complete."
   artifacts:
