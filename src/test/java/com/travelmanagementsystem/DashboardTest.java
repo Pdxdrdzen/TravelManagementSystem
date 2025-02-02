@@ -13,24 +13,38 @@ import java.sql.ResultSet;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-@ExtendWith(MockitoExtension.class) 
+@ExtendWith(MockitoExtension.class)
 class DashboardTest {
-
     @Mock
-    private Connection mockConnection; 
-
+    private Connect mockConnect;
+    
     @Mock
-    private PreparedStatement mockPreparedStatement; 
-
+    private PreparedStatement mockPreparedStatement;
+    
     @Mock
-    private ResultSet mockResultSet; 
-
-    @InjectMocks
-    private Dashboard dashboard; 
+    private ResultSet mockResultSet;
+    
+    private Dashboard dashboard;
 
     @BeforeEach
-    void setUp() {
-        dashboard = new Dashboard("testUser");
+    @BeforeEach
+    void setUp() throws SQLException {
+        
+        when(mockConnect.prepareStatement(anyString())).thenReturn(mockPreparedStatement);
+        when(mockPreparedStatement.executeQuery()).thenReturn(mockResultSet);
+        
+        
+        dashboard = new Dashboard("testUser") {
+            @Override
+            protected void setupImage() {
+                
+            }
+            
+            @Override
+            protected Connect createConnect() {
+                return mockConnect;
+            }
+        };
     }
 
     @Test
@@ -65,10 +79,20 @@ class DashboardTest {
     @Test
     void testHandleUtilities() {
         
-        assertDoesNotThrow(() -> dashboard.handleUtilities(dashboard.payments));
-        assertDoesNotThrow(() -> dashboard.handleUtilities(dashboard.calculators));
-        assertDoesNotThrow(() -> dashboard.handleUtilities(dashboard.notepad));
-        assertDoesNotThrow(() -> dashboard.handleUtilities(dashboard.wiecej));
+        ProcessBuilder mockProcessBuilder = mock(ProcessBuilder.class);
+        Process mockProcess = mock(Process.class);
+        
+        try {
+            when(mockProcessBuilder.start()).thenReturn(mockProcess);
+            doReturn(mockProcessBuilder).when(spy(new ProcessBuilder("")));
+            
+            assertDoesNotThrow(() -> dashboard.handleUtilities(dashboard.payments));
+            assertDoesNotThrow(() -> dashboard.handleUtilities(dashboard.calculators));
+            assertDoesNotThrow(() -> dashboard.handleUtilities(dashboard.notepad));
+            assertDoesNotThrow(() -> dashboard.handleUtilities(dashboard.wiecej));
+        } catch (Exception e) {
+            fail("Shouldn't throw exception");
+        }
     }
 
     @Test
