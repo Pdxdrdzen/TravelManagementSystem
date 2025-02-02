@@ -42,7 +42,7 @@ class BookHotelTest {
     public void setUp() throws SQLException {
         MockitoAnnotations.openMocks(this);
 
-    
+        // Mockowanie Connect
         when(mockConnect.prepareStatement(anyString())).thenReturn(mockPreparedStatement);
         when(mockPreparedStatement.executeQuery()).thenReturn(mockResultSet);
         when(mockPreparedStatement.executeUpdate()).thenReturn(1);
@@ -50,7 +50,7 @@ class BookHotelTest {
         when(mockResultSet.getString("username")).thenReturn("TestUser");
         when(mockResultSet.getString("phone")).thenReturn("123456789");
 
-    
+        // Inicjalizacja BookHotel z mockami
         bookHotel = spy(new BookHotel("TestUser") {
             @Override
             protected Connect createConnect() {
@@ -58,7 +58,7 @@ class BookHotelTest {
             }
         });
 
-    
+        // Przypisanie mocków do pól BookHotel
         bookHotel.usernameLabel = mockUsernameLabel;
         bookHotel.phoneLabel = mockPhoneLabel;
         bookHotel.priceLabel = mockPriceLabel;
@@ -71,48 +71,48 @@ class BookHotelTest {
 
     @Test
     void testLoadCustomerData_success() {
-        
+        // Wywołanie metody loadCustomerData
         bookHotel.loadCustomerData();
 
-        
+        // Weryfikacja, czy etykiety zostały ustawione poprawnie
         verify(mockUsernameLabel, times(1)).setText("TestUser");
         verify(mockPhoneLabel, times(1)).setText("123456789");
     }
 
     @Test
     void testUpdateHotels() {
-        
+        // Symulacja wybrania kierunku
         when(mockDestinationPackage.getSelectedItem()).thenReturn("Hurghada, Egipt");
 
-
+        // Wywołanie metody updateHotels
         bookHotel.updateHotels();
 
-        
+        // Weryfikacja, czy odpowiedni hotel został dodany
         verify(mockHotelPackage).add("The V Luxury Resort");
     }
 
     @Test
     void testCalculatePrice_success() throws SQLException {
-        
+        // Symulacja danych wejściowych
         when(mockHotelPackage.getSelectedItem()).thenReturn("The V Luxury Resort");
         when(mockPeopleTextField.getText()).thenReturn("2");
         when(mockNightsTextField.getText()).thenReturn("3");
         when(mockFoodChoice.getSelectedItem()).thenReturn("Tak");
 
-        
+        // Symulacja odpowiedzi z bazy danych
         when(mockResultSet.getString("costperperson")).thenReturn("100");
         when(mockResultSet.getString("food")).thenReturn("50");
 
-        
+        // Wywołanie metody calculatePrice
         bookHotel.calculatePrice();
 
-        
+        // Weryfikacja, czy cena została poprawnie obliczona
         verify(mockPriceLabel).setText("5400 Zł");
     }
 
     @Test
     void testBookHotel_success() throws SQLException {
-        
+        // Symulacja danych wejściowych
         when(mockUsernameLabel.getText()).thenReturn("TestUser");
         when(mockDestinationPackage.getSelectedItem()).thenReturn("Hurghada, Egipt");
         when(mockHotelPackage.getSelectedItem()).thenReturn("The V Luxury Resort");
@@ -121,10 +121,10 @@ class BookHotelTest {
         when(mockPhoneLabel.getText()).thenReturn("123456789");
         when(mockPriceLabel.getText()).thenReturn("5400 Zł");
 
-        
+        // Wywołanie metody bookHotel
         bookHotel.bookHotel();
 
-    
+        // Weryfikacja, czy executeUpdate został wywołany
         verify(mockPreparedStatement).executeUpdate();
     }
 }
