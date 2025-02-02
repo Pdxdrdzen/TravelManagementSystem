@@ -26,6 +26,9 @@ public class BookHotel extends JFrame implements ActionListener {
     private final JButton checkPrice;
     private final JButton bookHotelButton;
     private final JButton back;
+    protected Connect createConnect() {
+        return new Connect();
+    }
 
     public BookHotel(String username) {
         this.username = username;
@@ -313,7 +316,5 @@ public class BookHotel extends JFrame implements ActionListener {
     public JLabel getPriceLabel() {
         return priceLabel;
     }
-    protected Connect createConnect() {
-        return new Connect();
-    }
+
 }
