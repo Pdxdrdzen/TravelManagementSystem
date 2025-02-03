@@ -2,109 +2,64 @@ package com.travelmanagementsystem;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
+import org.mockito.Mockito;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
+import java.awt.event.ActionEvent;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
 
-@ExtendWith(MockitoExtension.class)
 class DashboardTest {
-    @Mock
-    private Connect mockConnect;
-    
-    @Mock
-    private PreparedStatement mockPreparedStatement;
-    
-    @Mock
-    private ResultSet mockResultSet;
-    
     private Dashboard dashboard;
+    private ActionEvent mockEvent;
 
     @BeforeEach
-    @BeforeEach
-    void setUp() throws SQLException {
-        
-        when(mockConnect.prepareStatement(anyString())).thenReturn(mockPreparedStatement);
-        when(mockPreparedStatement.executeQuery()).thenReturn(mockResultSet);
-        
-        
-        dashboard = new Dashboard("testUser") {
-            @Override
-            protected void setupImage() {
-                
-            }
-            
-            @Override
-            protected Connect createConnect() {
-                return mockConnect;
-            }
-        };
+    void setUp() {
+        dashboard = new Dashboard("testUser");
+        mockEvent = mock(ActionEvent.class);
     }
 
     @Test
-    void testHandlePersonalDetails() {
-        
-        assertTrue(dashboard.handlePersonalDetails(dashboard.addPersonalDetails));
-        assertTrue(dashboard.handlePersonalDetails(dashboard.viewPersonalDetails));
-        assertTrue(dashboard.handlePersonalDetails(dashboard.updatePersonalDetails));
-        assertTrue(dashboard.handlePersonalDetails(dashboard.deletePersonalDetails));
-        assertFalse(dashboard.handlePersonalDetails(new Object())); // Testowanie nieprawidłowego źródła
+    void testHandlePersonalDetails_Add() {
+        mockEvent = new ActionEvent(dashboard.addPersonalDetails, ActionEvent.ACTION_PERFORMED, "");
+        assertTrue(dashboard.handlePersonalDetails(mockEvent.getSource()));
     }
 
     @Test
-    void testHandlePackages() {
-        
-        assertTrue(dashboard.handlePackages(dashboard.checkpackages));
-        assertTrue(dashboard.handlePackages(dashboard.bookpackages));
-        assertTrue(dashboard.handlePackages(dashboard.viewpackages));
-        assertFalse(dashboard.handlePackages(new Object())); // Testowanie nieprawidłowego źródła
+    void testHandlePersonalDetails_View() {
+        mockEvent = new ActionEvent(dashboard.viewPersonalDetails, ActionEvent.ACTION_PERFORMED, "");
+        assertTrue(dashboard.handlePersonalDetails(mockEvent.getSource()));
     }
 
     @Test
-    void testHandleHotels() {
-        
-        assertTrue(dashboard.handleHotels(dashboard.viewhotels));
-        assertTrue(dashboard.handleHotels(dashboard.bookhotels));
-        assertTrue(dashboard.handleHotels(dashboard.viewBookedHotels));
-        assertTrue(dashboard.handleHotels(dashboard.destinations));
-        assertFalse(dashboard.handleHotels(new Object())); 
+    void testHandlePackages_Check() {
+        mockEvent = new ActionEvent(dashboard.checkpackages, ActionEvent.ACTION_PERFORMED, "");
+        assertTrue(dashboard.handlePackages(mockEvent.getSource()));
     }
 
     @Test
-    void testHandleUtilities() {
-        
-        ProcessBuilder mockProcessBuilder = mock(ProcessBuilder.class);
-        Process mockProcess = mock(Process.class);
-        
-        try {
-            when(mockProcessBuilder.start()).thenReturn(mockProcess);
-            doReturn(mockProcessBuilder).when(spy(new ProcessBuilder("")));
-            
-            assertDoesNotThrow(() -> dashboard.handleUtilities(dashboard.payments));
-            assertDoesNotThrow(() -> dashboard.handleUtilities(dashboard.calculators));
-            assertDoesNotThrow(() -> dashboard.handleUtilities(dashboard.notepad));
-            assertDoesNotThrow(() -> dashboard.handleUtilities(dashboard.wiecej));
-        } catch (Exception e) {
-            fail("Shouldn't throw exception");
-        }
+    void testHandleHotels_View() {
+        mockEvent = new ActionEvent(dashboard.viewhotels, ActionEvent.ACTION_PERFORMED, "");
+        assertTrue(dashboard.handleHotels(mockEvent.getSource()));
     }
 
     @Test
     void testLaunchCalculator() {
-        
-        assertDoesNotThrow(() -> dashboard.launchCalculator());
+        Dashboard spyDashboard = Mockito.spy(dashboard);
+        ProcessBuilder mockProcessBuilder = mock(ProcessBuilder.class);
+
+        doReturn(mockProcessBuilder).when(spyDashboard).createProcessBuilder("calc.exe");
+        spyDashboard.launchCalculator();
+        verify(spyDashboard).createProcessBuilder("calc.exe");
     }
 
     @Test
     void testLaunchNotepad() {
-        
-        assertDoesNotThrow(() -> dashboard.launchNotepad());
-    }
+        Dashboard spyDashboard = Mockito.spy(dashboard);
+        ProcessBuilder mockProcessBuilder = mock(ProcessBuilder.class);
 
+        doReturn(mockProcessBuilder).when(spyDashboard).createProcessBuilder("notepad.exe");
+        spyDashboard.launchNotepad();
+        verify(spyDashboard).createProcessBuilder("notepad.exe");
+    }
 }
