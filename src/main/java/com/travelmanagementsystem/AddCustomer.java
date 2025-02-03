@@ -27,6 +27,10 @@ public class AddCustomer extends JFrame implements ActionListener {
 
     String username;
 
+    /**
+     * Konstruktor klasy AddCustomer, zawierający wszelakopojętą inicjalizacje, taką jak ustawienia okna, ustawienia pól tekstowych itd.
+     * @param username
+     */
     public AddCustomer(String username) {
         this.username=username;
         setTitle("Dodaj klienta");
@@ -141,27 +145,39 @@ public class AddCustomer extends JFrame implements ActionListener {
         setVisible(true);
     }
 
+    /**
+     * Funkcja służąca do wczytywania danych od użytkownika otrzymanych przy logowaniu w celu wyświetlenia ich w oknie
+     */
     private void loadUserData() {
         ResultSet rs = null;
-        try(Connect con=new Connect()) {
-            rs = con.s.executeQuery("SELECT username, name FROM users WHERE username = '"+username+"'");
+        try (Connect con = new Connect();
+             PreparedStatement stmt = con.prepareStatement("SELECT username, name FROM users WHERE username = ?")) {
+
+            stmt.setString(1, username);
+            rs = stmt.executeQuery();
+
             if (rs.next()) {
                 labelusername.setText(rs.getString("username"));
                 labelname.setText(rs.getString("name"));
             }
         } catch (SQLException e) {
-            JOptionPane.showMessageDialog(this, "Blad wczytywania danych klienta " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Błąd wczytywania danych klienta " + e.getMessage(), "Error1", JOptionPane.ERROR_MESSAGE);
         } finally {
             if (rs != null) {
                 try {
                     rs.close();
-                } catch (SQLException e) {
-                    e.printStackTrace();
+                } catch (SQLException ignored) {
+                    JOptionPane.showMessageDialog(null, ignored.getMessage(), "Error2", JOptionPane.ERROR_MESSAGE);
                 }
             }
         }
     }
 
+
+    /**
+     * Funkcja określająca działanie do naciśnięcia konkretnego przycisku
+     * @param ae the event to be processed
+     */
     @Override
     public void actionPerformed(ActionEvent ae) {
         if (ae.getSource() == add) {
@@ -171,6 +187,9 @@ public class AddCustomer extends JFrame implements ActionListener {
         }
     }
 
+    /**
+     * Funkcja zapisująca wybory użytkownika i wpisująca je do bazy danych
+     */
     private void saveCustomerData() {
         String gender;
         if (rmale.isSelected()) {

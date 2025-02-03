@@ -17,6 +17,9 @@ public class CheckPackage extends JFrame  {
     private static final String OFFERT="OFERTA LIMITOWANA CZASOWO";
     private static final String NOW="TYLKO TERAZ!";
 
+    /**
+     * Konstruktor klasy CheckPackage(), ustawiajacy dostepne pakiety(oferty), ich mozliwosci i kierunki
+     */
     CheckPackage(){
 
         String[] package1={"ZŁOTA OFERTA", " 14 DNI NA TENERYFIE", "MIEJSCE W BIZNES KLASIE","WYCIECZKI MIEJSKIE Z PRZEWODNIKIEM NA ŻYCZENIE",FOOD,"(oraz jeszcze pyszniejsze obiado-kolacje..)","W CENIE 3 DNIOWY REJS PROMEM PO OCEANIE ATLANTYCKIM","ALKOHOLE/PRZEKĄSKI UNLIMITED 24/7",ANIMACJE,RESERVE,OFFERT,NOW,"2200 ZŁ/OS","05:00:00", "ikony/package1.jpg"};
@@ -41,6 +44,12 @@ public class CheckPackage extends JFrame  {
         setVisible(true);
 
     }
+
+    /**
+     * Funkcja tworząca wygląd pakietów na ekranie
+     * @param packages
+     * @return
+     */
     public JPanel createPackage(String[] packages){
         JPanel p1=new JPanel();
         p1.setLayout(null);
@@ -142,6 +151,10 @@ public class CheckPackage extends JFrame  {
 
 
     }
+
+    /**
+     * Funkcja służąca do odliczania w lewym dolnym rogu ekranu, wyświetlenie" ile zostało promocji na oferte"
+     */
     private void startCountdown() {
         LocalTime startTime = LocalTime.of(9, 0, 0);
         long initialDelay = startTime.toSecondOfDay();
@@ -149,6 +162,10 @@ public class CheckPackage extends JFrame  {
         timer = new Timer(1000, new ActionListener() {
             private long remainingSeconds = initialDelay;
 
+            /**
+             * Funkcja służąca do obsługi zdarzeń naciśnięcia przycisków
+             * @param e the event to be processed
+             */
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (remainingSeconds <= 0) {

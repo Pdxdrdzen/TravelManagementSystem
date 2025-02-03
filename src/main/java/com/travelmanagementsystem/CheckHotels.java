@@ -9,18 +9,26 @@ public class CheckHotels extends JFrame implements Runnable {
     private JLabel caption;
     private JLabel country;
 
+    /**
+     * String zawierający wszystkie dostępne hotele
+     */
     private final String[] text = {
             "The V Luxury Resort", "Hilton St. Julian's", "Alan Xafira Deluxe Resort",
             "Barcelo Lanzarote Active Resort", "Hard Rock Hotel", "Fuerteventura Princess Hotel",
             "AP Cabanas Beach & Nature", "Hilton Hotel", "De L'Europe Hotel", "Stella Island Luxury Hotel"
     };
-
+    /**
+     * String zawierający wszystkie dostępne kierunki podróży dla użytkownika
+     */
     private final String[] text2 = {
             "Hurghada, Egipt", "Portomaso, Malta", "Alanya, Turcja",
             "Las Palmas, Hiszpania", "Adeje, Teneryfa", "Gran Canaria, Hiszpania",
             "Cabanas, Portugalia", "Gdańsk, Polska", "Amsterdam, Holandia", "Wyspa Stella, Grecja"
     };
 
+    /**
+     * Funkcja służąca do obsługi "slideshow" hoteli na ekranie, wymagane do obsługi wątków
+     */
     public void run() {
         try {
             for (int i = 0; i < 10; i++) {
@@ -36,9 +44,12 @@ public class CheckHotels extends JFrame implements Runnable {
         }
     }
 
+    /**
+     * Konstruktor klasy CheckHotels
+     */
     CheckHotels() {
         setBounds(500, 200, 800, 600);
-        setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE); // Użycie poprawnego dostępu statycznego
+        setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
         caption = new JLabel();
         caption.setBounds(50, 500, 1000, 70);

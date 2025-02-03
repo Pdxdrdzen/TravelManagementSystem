@@ -21,6 +21,12 @@ public class BookPackage extends JFrame implements ActionListener {
     private JButton checkprice;
     private JButton bookpackageButton;
     private JButton back;
+
+    /**
+     * Konstruktor klasy BookPackage inicjalizujacy ustawienia okna, ustawienia pol tekstowych oraz polaczenie z baza danych.
+     *
+     * @param username
+     */
     BookPackage(String username) {
         this.username=username;
         setBounds(350,200,1100,500);
@@ -100,22 +106,23 @@ public class BookPackage extends JFrame implements ActionListener {
         labelprice.setBounds(250,310,200,25);
         add(labelprice);
 
-        try(Connect conn=new Connect()){
+        try (Connect conn = new Connect();
+             PreparedStatement stmt = conn.prepareStatement("SELECT * FROM customer WHERE username = ?")) {
 
-            String query="select*from customer where username='"+username+"'";
-            ResultSet rs=conn.s.executeQuery(query);
-            while(rs.next()){
+            stmt.setString(1, username);
+            ResultSet rs = stmt.executeQuery();
+
+            while (rs.next()) {
                 labelusername.setText(rs.getString("username"));
                 labelid.setText(rs.getString("id"));
                 labelnumber.setText(rs.getString("number"));
                 labelphone.setText(rs.getString("phone"));
-
-
             }
 
-        }catch(Exception e){
-            e.printStackTrace();
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(this, "Błąd wczytywania danych klienta " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
+
         checkprice=new JButton("Sprawdz cene");
         checkprice.setBackground(Color.BLACK);
         checkprice.setForeground(Color.WHITE);
@@ -153,6 +160,11 @@ public class BookPackage extends JFrame implements ActionListener {
 
 
     }
+
+    /**
+     * Funkcja służąca do przypisania działania do konkretnych czynności, w tym przypadku do naciśnięcia przycisku
+     * @param ae the event to be processed
+     */
     public void actionPerformed(ActionEvent ae){
         if(ae.getSource()==checkprice){
             String pack=cpackage.getSelectedItem();

@@ -8,6 +8,9 @@ public class Connect implements AutoCloseable {
     Connection c;
     Statement s;
 
+    /**
+     * Konstruktor klasy Connect, sluzacy do zainicjalizowania połączenia z bazą na podstawie danych w database.properties
+     */
     Connect() {
         try {
             Properties props = new Properties();
@@ -27,10 +30,20 @@ public class Connect implements AutoCloseable {
         }
     }
 
+    /**
+     * Funkcja sluzaca do wystartowania PreparedStatement
+     * @param query
+     * @return
+     * @throws SQLException
+     */
     public PreparedStatement prepareStatement(String query) throws SQLException {
         return c.prepareStatement(query);
     }
 
+    /**
+     * Implementacja close() z klasy AutoCloseable
+     * @throws SQLException
+     */
     @Override
     public void close() throws SQLException {
         if (s != null) s.close();

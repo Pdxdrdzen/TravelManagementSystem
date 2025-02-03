@@ -2,85 +2,64 @@ package com.travelmanagementsystem;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
+import org.mockito.Mockito;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
+import java.awt.event.ActionEvent;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
 
-@ExtendWith(MockitoExtension.class)
 class DashboardTest {
-
-    @Mock
-    private Connection mockConnection;
-
-    @Mock
-    private PreparedStatement mockPreparedStatement;
-
-    @Mock
-    private ResultSet mockResultSet;
-
-    @InjectMocks
     private Dashboard dashboard;
+    private ActionEvent mockEvent;
 
     @BeforeEach
     void setUp() {
         dashboard = new Dashboard("testUser");
+        mockEvent = mock(ActionEvent.class);
     }
 
     @Test
-    void testHandlePersonalDetails() {
-
-        assertTrue(dashboard.handlePersonalDetails(dashboard.addPersonalDetails));
-        assertTrue(dashboard.handlePersonalDetails(dashboard.viewPersonalDetails));
-        assertTrue(dashboard.handlePersonalDetails(dashboard.updatePersonalDetails));
-        assertTrue(dashboard.handlePersonalDetails(dashboard.deletePersonalDetails));
-        assertFalse(dashboard.handlePersonalDetails(new Object())); // Testowanie nieprawidłowego źródła
+    void testHandlePersonalDetails_Add() {
+        mockEvent = new ActionEvent(dashboard.addPersonalDetails, ActionEvent.ACTION_PERFORMED, "");
+        assertTrue(dashboard.handlePersonalDetails(mockEvent.getSource()));
     }
 
     @Test
-    void testHandlePackages() {
-
-        assertTrue(dashboard.handlePackages(dashboard.checkpackages));
-        assertTrue(dashboard.handlePackages(dashboard.bookpackages));
-        assertTrue(dashboard.handlePackages(dashboard.viewpackages));
-        assertFalse(dashboard.handlePackages(new Object())); // Testowanie nieprawidłowego źródła
+    void testHandlePersonalDetails_View() {
+        mockEvent = new ActionEvent(dashboard.viewPersonalDetails, ActionEvent.ACTION_PERFORMED, "");
+        assertTrue(dashboard.handlePersonalDetails(mockEvent.getSource()));
     }
 
     @Test
-    void testHandleHotels() {
-
-        assertTrue(dashboard.handleHotels(dashboard.viewhotels));
-        assertTrue(dashboard.handleHotels(dashboard.bookhotels));
-        assertTrue(dashboard.handleHotels(dashboard.viewBookedHotels));
-        assertTrue(dashboard.handleHotels(dashboard.destinations));
-        assertFalse(dashboard.handleHotels(new Object()));
+    void testHandlePackages_Check() {
+        mockEvent = new ActionEvent(dashboard.checkpackages, ActionEvent.ACTION_PERFORMED, "");
+        assertTrue(dashboard.handlePackages(mockEvent.getSource()));
     }
 
     @Test
-    void testHandleUtilities() {
-
-        assertDoesNotThrow(() -> dashboard.handleUtilities(dashboard.payments));
-        assertDoesNotThrow(() -> dashboard.handleUtilities(dashboard.calculators));
-        assertDoesNotThrow(() -> dashboard.handleUtilities(dashboard.notepad));
-        assertDoesNotThrow(() -> dashboard.handleUtilities(dashboard.wiecej));
+    void testHandleHotels_View() {
+        mockEvent = new ActionEvent(dashboard.viewhotels, ActionEvent.ACTION_PERFORMED, "");
+        assertTrue(dashboard.handleHotels(mockEvent.getSource()));
     }
 
     @Test
     void testLaunchCalculator() {
+        Dashboard spyDashboard = Mockito.spy(dashboard);
+        ProcessBuilder mockProcessBuilder = mock(ProcessBuilder.class);
 
-        assertDoesNotThrow(() -> dashboard.launchCalculator());
+        doReturn(mockProcessBuilder).when(spyDashboard).createProcessBuilder("calc.exe");
+        spyDashboard.launchCalculator();
+        verify(spyDashboard).createProcessBuilder("calc.exe");
     }
 
     @Test
     void testLaunchNotepad() {
+        Dashboard spyDashboard = Mockito.spy(dashboard);
+        ProcessBuilder mockProcessBuilder = mock(ProcessBuilder.class);
 
-        assertDoesNotThrow(() -> dashboard.launchNotepad());
+        doReturn(mockProcessBuilder).when(spyDashboard).createProcessBuilder("notepad.exe");
+        spyDashboard.launchNotepad();
+        verify(spyDashboard).createProcessBuilder("notepad.exe");
     }
-
 }

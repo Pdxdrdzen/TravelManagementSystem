@@ -6,6 +6,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.*;
 
+/**
+ * Klasa obsługująca funkcjonalność rezerwacji hotelu dla użytkownika
+ */
 public class BookHotel extends JFrame implements ActionListener {
 
     private static final String FONT_NAME = "Tahoma";
@@ -23,17 +26,23 @@ public class BookHotel extends JFrame implements ActionListener {
     JLabel priceLabel;
 
     // Initialize buttons as final fields
-    private final JButton checkPrice;
-    private final JButton bookHotelButton;
-    private final JButton back;
+    final JButton checkPrice;
+    final JButton bookHotelButton;
+    final JButton back;
     protected Connect createConnect() {
         return new Connect();
     }
 
+    /**
+     *
+     * @param username
+     * Konstruktor klasy, gdzie inicjalizujemy zmienne, stale, funkcje wyswietlania określonych rzeczy na ekranie, rozmiar ekranu itd
+     */
+
     public BookHotel(String username) {
         this.username = username;
 
-        // Initialize all components in constructor
+
         destinationPackage = new Choice();
         hotelPackage = new Choice();
         foodChoice = new Choice();
@@ -43,7 +52,8 @@ public class BookHotel extends JFrame implements ActionListener {
         phoneLabel = new JLabel();
         priceLabel = new JLabel();
 
-        // Initialize buttons
+
+
         checkPrice = new JButton("Sprawdz cene");
         bookHotelButton = new JButton("Rezerwuj teraz");
         back = new JButton("Powrot");
@@ -134,6 +144,10 @@ public class BookHotel extends JFrame implements ActionListener {
         setVisible(true);
     }
 
+    /**
+     * Ustawiamy opcje kierunków do wyboru dla użytkownika
+     * @param destinationPackage
+     */
     private void setupDestinations(Choice destinationPackage) {
         destinationPackage.add("Hurghada, Egipt");
         destinationPackage.add("Portomaso, Malta");
@@ -147,6 +161,9 @@ public class BookHotel extends JFrame implements ActionListener {
         destinationPackage.add("Wyspa Stella, Grecja");
     }
 
+    /**
+     * Inicjalizujemy przyciski do obslugi dla uzytkownika
+     */
     private void setupButtons() {
         checkPrice.setBackground(Color.BLACK);
         checkPrice.setForeground(Color.WHITE);
@@ -167,6 +184,9 @@ public class BookHotel extends JFrame implements ActionListener {
         add(back);
     }
 
+    /**
+     * Ustawiamy tlo ekranu, czyli zdjecie
+     */
     private void setupImage() {
         ImageIcon i1 = new ImageIcon(ClassLoader.getSystemResource("ikony/bookpackage.jpg"));
         Image i2 = i1.getImage().getScaledInstance(500, 300, Image.SCALE_SMOOTH);
@@ -176,6 +196,9 @@ public class BookHotel extends JFrame implements ActionListener {
         add(l14);
     }
 
+    /**
+     * Funkcja do załadowania danych użytkownika, chcącego zarezerwować hotel
+     */
     void loadCustomerData() {
         try (Connect con = new Connect();
              PreparedStatement stmt = con.prepareStatement(
@@ -191,6 +214,10 @@ public class BookHotel extends JFrame implements ActionListener {
             JOptionPane.showMessageDialog(this, "Error loading customer data: " + e.getMessage());
         }
     }
+
+    /**
+     * Funkcja sluzaca do aktualizacji dostepnych hoteli ze wzgledu na wybrany kierunek podróży
+     */
     public void updateHotels() {
         hotelPackage.removeAll();
         String selectedDestination = destinationPackage.getSelectedItem();
@@ -232,6 +259,9 @@ public class BookHotel extends JFrame implements ActionListener {
         }
     }
 
+    /**
+     * Funkcja służąca do obliczania łącznej kwoty biorąc pod uwagę wybrany hotel, kierunek, ilość osób, wyżywienie
+     */
     void calculatePrice() {
         try (Connect c = new Connect();
              PreparedStatement stmt = c.prepareStatement(
@@ -261,6 +291,9 @@ public class BookHotel extends JFrame implements ActionListener {
         }
     }
 
+    /**'
+     * Klasa slużąca do zapisania do bazy danych o zarezerwowanym przez użytkownika hotelu
+     */
     void bookHotel() {
         try (Connect con = createConnect();
              PreparedStatement stmt = con.prepareStatement(
@@ -281,7 +314,10 @@ public class BookHotel extends JFrame implements ActionListener {
         }
     }
 
-
+    /**
+     * Potrzebna do przesłonięcia metoda actionPerformed, która opisuje wykonywane działanie względem naciśniętego przyciusku przez użytkownika
+     * @param ae the event to be processed
+     */
     @Override
     public void actionPerformed(ActionEvent ae) {
         if (ae.getSource() == checkPrice) {
@@ -293,25 +329,53 @@ public class BookHotel extends JFrame implements ActionListener {
         }
     }
 
+    /**
+     * Funkcja zwracajaca wybrany kierunek przez użytkownika
+     * @return
+     */
     public Choice getDestinationPackage() {
         return destinationPackage;
     }
 
+    /**
+     * Funkcja zwracająca hotel wybrany przez użytkownika
+     * @return
+     */
     public Choice getHotelPackage() {
         return hotelPackage;
     }
+
+    /**
+     * Funkcja zwracająca ilość osób podanych przez użytkownika
+     * @return
+     */
 
     public JTextField getPeopleTextField() {
         return peopleTextField;
     }
 
+    /**
+     * Funkcja zwracająca ilość noclegów wybraną przez użytkownika
+     * @return
+     */
+
     public JTextField getNightsTextField() {
         return nightsTextField;
     }
 
+    /**
+     * Funkcja zwracająca, czy użytkownik wybrał opcje z wyżywieniem, czy nie
+     * @return
+     */
+
     public Choice getFoodChoice() {
         return foodChoice;
     }
+
+    /**
+     * Funkcja zwracająca cene wyliczoną za całośc rezerwacji
+     * @return
+     */
 
     public JLabel getPriceLabel() {
         return priceLabel;

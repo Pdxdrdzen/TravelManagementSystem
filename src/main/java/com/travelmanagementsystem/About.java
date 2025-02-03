@@ -7,7 +7,7 @@ import java.awt.event.ActionListener;
 
 public class About extends JFrame implements ActionListener {
     JButton back;
-    /// Za pomoca TextBlock
+
     String message= """
          **O nas**
 
@@ -17,6 +17,10 @@ public class About extends JFrame implements ActionListener {
 
            Oferujemy szeroką gamę wyjazdów dostosowanych do Twoich marzeń – indywidualne plany, wycieczki grupowe i ekskluzywne wyprawy. Z nami podróżowanie staje się proste i pełne wrażeń. Wyrusz z nami w niezapomnianą podróż! 🌍✈️
 """;
+
+    /**
+     * Konstruktor klasy About, zawierający inicjalizacje wszelakopojęte, takie jak ustawienia okna, ustawienia pól tekstowych itd
+     */
     About(){
         setBounds(600,200,500,550);
         setLayout(null);
@@ -42,6 +46,11 @@ public class About extends JFrame implements ActionListener {
 
 
     }
+
+    /**
+     * Wymagana do przesłonięcia funkcja, która przypisuje konkretnie działanie do naciśniętego przycisku przez użytkownika
+     * @param e the event to be processed
+     */
     public void actionPerformed(ActionEvent e) {
         if(e.getSource()==back){
             setVisible(false);
