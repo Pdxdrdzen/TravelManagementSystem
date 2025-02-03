@@ -22,9 +22,6 @@ public class Dashboard extends JFrame implements ActionListener {
     JButton calculators;
     JButton notepad;
     JButton wiecej;
-    protected Connect createConnect() {
-    return new Connect();
-}
 
     Dashboard(String username){
         this.username = username;
@@ -295,9 +292,13 @@ public class Dashboard extends JFrame implements ActionListener {
         }
     }
 
+    protected ProcessBuilder createProcessBuilder(String command) {
+        return new ProcessBuilder(command);
+    }
+
     public void launchCalculator() {
         try {
-            ProcessBuilder processBuilder = new ProcessBuilder("calc.exe");
+            ProcessBuilder processBuilder = createProcessBuilder("calc.exe");
             processBuilder.start();
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -306,13 +307,14 @@ public class Dashboard extends JFrame implements ActionListener {
 
     public void launchNotepad() {
         try {
-            ProcessBuilder processBuilder = new ProcessBuilder("notepad.exe");
+            ProcessBuilder processBuilder = createProcessBuilder("notepad.exe");
             processBuilder.start();
         } catch (Exception ex) {
             ex.printStackTrace();
         }
     }
-
-
-
 }
+
+
+
+
