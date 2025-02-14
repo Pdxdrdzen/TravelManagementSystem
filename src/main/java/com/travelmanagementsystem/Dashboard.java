@@ -4,7 +4,10 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-
+/**
+ * Klasa Dashboard - główna klasa obsługująca projekt, panel sterujący dający możliwość
+ * użytkownikowi do przejścia w dowolną część Systemu Biura Podróży z jednego miejsca
+ */
 public class Dashboard extends JFrame implements ActionListener {
     private final String username;
     JButton bookhotels;
@@ -23,6 +26,10 @@ public class Dashboard extends JFrame implements ActionListener {
     JButton notepad;
     JButton wiecej;
 
+    /**
+     * Konstruktor klasy Dashboard, obsługujący  inicjalizacje okna, ikony startowej, nagłówka, pól tekstowych i funkcjonalności
+     * @param username
+     */
     Dashboard(String username){
         this.username = username;
         setExtendedState(JFrame.MAXIMIZED_BOTH);
@@ -206,6 +213,11 @@ public class Dashboard extends JFrame implements ActionListener {
 
         setVisible(true);
     }
+
+    /**
+     * Funkcja odpowiedzialna za funkcjonalność każdego z przycisków na dashboardzie
+     * @param e the event to be processed
+     */
     public void actionPerformed(ActionEvent e) {
         Object source = e.getSource();
 
@@ -224,6 +236,11 @@ public class Dashboard extends JFrame implements ActionListener {
         handleUtilities(source);
     }
 
+    /**
+     * Funkcja obsługująca przypisywanie nazwy użytkownika podanej przy logowaniu do klas które jej potrzebują
+     * @param source
+     * @return
+     */
     public boolean handlePersonalDetails(Object source) {
         if (source == addPersonalDetails) {
             new AddCustomer(this.username);
@@ -244,6 +261,11 @@ public class Dashboard extends JFrame implements ActionListener {
         return false;
     }
 
+    /**
+     * Funkcja obsługująca klasy , które dotyczą ofert
+     * @param source
+     * @return
+     */
     public boolean handlePackages(Object source) {
         if (source == checkpackages) {
             new CheckPackage();
@@ -260,6 +282,11 @@ public class Dashboard extends JFrame implements ActionListener {
         return false;
     }
 
+    /**
+     * Funkcja obsługująca klas, które dotyczą hoteli
+     * @param source
+     * @return
+     */
     public boolean handleHotels(Object source) {
         if (source == viewhotels) {
             new CheckHotels();
@@ -280,6 +307,10 @@ public class Dashboard extends JFrame implements ActionListener {
         return false;
     }
 
+    /**
+     * Funkcja obsługująca różne funkcjonalności stricte nie związane z użytkownikiem (platnosci,kalkulator, notatki)
+     * @param source
+     */
     public void handleUtilities(Object source) {
         if (source == payments) {
             new Payment();
@@ -292,25 +323,36 @@ public class Dashboard extends JFrame implements ActionListener {
         }
     }
 
+    /**
+     * Funkcja, która zwraca komendę zapisaną w String, która później jest używana do egzekwowania określonych czynności
+     * @param command
+     * @return
+     */
     protected ProcessBuilder createProcessBuilder(String command) {
         return new ProcessBuilder(command);
     }
 
+    /**
+     * Funkcja służąca do odpalenia kalkulatora
+     */
     public void launchCalculator() {
         try {
             ProcessBuilder processBuilder = createProcessBuilder("calc.exe");
             processBuilder.start();
         } catch (Exception ex) {
-            ex.printStackTrace();
+            throw new RuntimeException();
         }
     }
 
+    /**
+     * Funkcja służąca do odpalenia notatnika
+     */
     public void launchNotepad() {
         try {
             ProcessBuilder processBuilder = createProcessBuilder("notepad.exe");
             processBuilder.start();
         } catch (Exception ex) {
-            ex.printStackTrace();
+            throw new RuntimeException();
         }
     }
 }

@@ -4,6 +4,9 @@ import java.awt.*;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
+/**
+ * Klasa Payment - służy do przeniesienia użytkownika do możliwości opłacenia swoich zarezerwowanych ofert/hoteli.
+ */
 public class Payment extends JFrame implements ActionListener {
     JButton pay;
     JButton back;
@@ -28,10 +31,18 @@ public class Payment extends JFrame implements ActionListener {
         back.setBounds(420,0,100,40);
         back.addActionListener(this);
         l1.add(back);
+
     }
+
+    /**
+     * W tym przypadku actionPerformed określa, że jeśli użytkownik wciśnie "Opłać teraz" przeniesie go do Przelewy24(klasa)
+     * a jeśli wciśnie " Powrót" zostanie spowrotem przeniesiony do Dashboard
+     * @param ae the event to be processed
+     */
     public void actionPerformed(ActionEvent ae){
         if(ae.getSource()==pay){
             new Przelewy24();
+            this.setVisible(false);
 
         }else if(ae.getSource()==back){
             this.setVisible(false);

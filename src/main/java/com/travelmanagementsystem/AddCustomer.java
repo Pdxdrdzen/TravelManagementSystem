@@ -6,6 +6,10 @@ import java.awt.event.ActionListener;
 import java.sql.*;
 import java.awt.event.*;
 
+/**
+ * Klasa AddCustomer - służy do zapisania danych osobowych użytkownika w bazie danych,
+ * które są potrzebne do rezerwacji hotelu/oferty
+ */
 public class AddCustomer extends JFrame implements ActionListener {
 
     private final JComboBox<String> comboID;
@@ -227,9 +231,11 @@ public class AddCustomer extends JFrame implements ActionListener {
                 try {
                     pstmt.close();
                 } catch (SQLException e) {
-                    e.printStackTrace();
-
+                    JOptionPane.showMessageDialog(null, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
                 }
+
+
+
             }
         }
     }

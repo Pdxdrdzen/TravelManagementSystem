@@ -5,11 +5,20 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.*;
 
+/**
+ * Klasa ForgetPasword - obsługuje opcje ,, Zapomniałem hasła"przy logowaniu, możliwość pozostawienia tego samego konta,
+ * ze zmianą tylko hasła do jego obsługi po dodaniu imienia i nazwy uzytkownika
+ */
 public class ForgetPassword extends JFrame implements ActionListener {
 
     JTextField tfusername, tfname;
     JPasswordField tfpassword, tfpassword2;
     JButton forget, back;
+
+    /**
+     * Konstruktor klasy ForgetPassword - implementacja parametrów okienka, wgrywanie zdjęcia w tle,
+     * inicjalizacja pól tekstowych oraz przycisku do wykonania operacji zmiany hasła
+     */
     ForgetPassword(){
         setBounds(350,200,850,380);
         getContentPane().setBackground(Color.white);
@@ -88,6 +97,14 @@ public class ForgetPassword extends JFrame implements ActionListener {
         setVisible(true);
 
     }
+
+    /**
+     * W tym wypadku metoda actionPerformed służy do określenia,
+     * że jeśli użytkownik naciśnie przycisk, to jego stare hasło
+     * w bazie danych zostanie zmienione na takie,
+     * jakie wpisał do pól tekstowych
+     * @param ae the event to be processed
+     */
     public void actionPerformed(ActionEvent ae) {
         if (ae.getSource() == forget) {
             String username = tfusername.getText();
@@ -111,7 +128,6 @@ public class ForgetPassword extends JFrame implements ActionListener {
                     return;
                 }
 
-                // Aktualizacja hasła
                 updateStmt.setString(1, newPassword);
                 updateStmt.setString(2, username);
 
@@ -124,8 +140,7 @@ public class ForgetPassword extends JFrame implements ActionListener {
                 }
 
             } catch (Exception e) {
-                e.printStackTrace();
-                JOptionPane.showMessageDialog(null, "ERROR!", "Error", JOptionPane.ERROR_MESSAGE);
+                throw new RuntimeException();
             }
         } else {
             setVisible(false);

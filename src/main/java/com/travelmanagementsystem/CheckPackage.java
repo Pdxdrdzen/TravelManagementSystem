@@ -7,6 +7,9 @@ import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.awt.event.ActionEvent;
 
+/**
+ * Klasa CheckPackage - klasa służąca do wyświetlenia użytkownikowi dostępnych ofert i ich szczegółów
+ */
 public class CheckPackage extends JFrame  {
     private JLabel countdown;
     private Timer timer;

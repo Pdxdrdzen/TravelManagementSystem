@@ -4,7 +4,9 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-
+/**
+ * Klasa About - służy do wyświetlenia strony z informacjami o systemie
+ */
 public class About extends JFrame implements ActionListener {
     JButton back;
 

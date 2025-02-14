@@ -2,6 +2,9 @@ package com.travelmanagementsystem;
 import javax.swing.*;
 import java.awt.*;
 
+/**
+ * Klasa CheckHotels - służy do wyświetlenia użytkownikowi dostępnych hoteli w formie prezentacji
+ */
 public class CheckHotels extends JFrame implements Runnable {
 
     private transient Thread t1;
@@ -40,7 +43,7 @@ public class CheckHotels extends JFrame implements Runnable {
             }
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt(); // Ponowne ustawienie flagi przerwania
-            e.printStackTrace();
+            throw new RuntimeException();
         }
     }
 

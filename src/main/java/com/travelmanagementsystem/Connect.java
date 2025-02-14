@@ -4,6 +4,9 @@ import java.sql.*;
 import java.util.Properties;
 import java.io.InputStream;
 
+/**
+ * Klasa Connect - Klasa służąca do nawiązania połączenia z bazą danych
+ */
 public class Connect implements AutoCloseable {
     Connection c;
     Statement s;
@@ -18,6 +21,7 @@ public class Connect implements AutoCloseable {
                 props.load(in);
             }
 
+
             String url = props.getProperty("db.url");
             String user = props.getProperty("db.user");
             String password = props.getProperty("db.password");
@@ -26,8 +30,11 @@ public class Connect implements AutoCloseable {
             c = DriverManager.getConnection(url, user, password);
             s = c.createStatement();
         } catch(Exception e) {
-            e.printStackTrace();
+            throw new RuntimeException();
         }
+    }
+    public Connection getConnection() {
+        return c;
     }
 
     /**

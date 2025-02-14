@@ -3,12 +3,23 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
+/**
+ * Klasa ViewBookedPackage - służy do wyświetlenia konkretnej zarezerwowanej oferty przez użytkownika
+ */
 public class ViewBookedPackage extends JFrame implements ActionListener {
 
     JButton back;
 
+    /**
+     * Konstruktor klasy ViewBookedPackage
+     * Inicjalizujemy tu parametry okienka, pola tekstowe, przyciski
+     * oraz łączymy się z bazą danych w celu pobrania z niej informacji
+     * o zarezerwowanej ofercie przez konkretnego użytkownika
+     * @param username
+     */
     ViewBookedPackage(String username) {
         setBounds(450,200,900,455);
         getContentPane().setBackground(Color.WHITE);
@@ -90,22 +101,28 @@ public class ViewBookedPackage extends JFrame implements ActionListener {
         image.setBounds(450,20,500,400);
         add(image);
 
-        try(Connect conn=new Connect()){
-            String query="select*from bookpackage where username='"+username+"'";
-            ResultSet rs=conn.s.executeQuery(query);
-            while(rs.next()){
-                labelusername.setText(rs.getString("username"));
-                labeloffer.setText(rs.getString("package"));
-                labelpeople.setText(rs.getString("people"));
-                labelid.setText(rs.getString("id"));
-                labelpesel.setText(rs.getString("pesel"));
-                labelphone.setText(rs.getString("phone"));
-                labelprice.setText(rs.getString("price"));
-            }
+        try (Connect conn = new Connect()) {
+            String query = "SELECT * FROM bookpackage WHERE username = ?";
 
-        }catch(Exception e){
-            e.printStackTrace();
+            try (PreparedStatement stmt = conn.getConnection().prepareStatement(query)) {
+                stmt.setString(1, username);
+
+                ResultSet rs = stmt.executeQuery();
+
+                while (rs.next()) {
+                    labelusername.setText(rs.getString("username"));
+                    labeloffer.setText(rs.getString("package"));
+                    labelpeople.setText(rs.getString("people"));
+                    labelid.setText(rs.getString("id"));
+                    labelpesel.setText(rs.getString("pesel"));
+                    labelphone.setText(rs.getString("phone"));
+                    labelprice.setText(rs.getString("price"));
+                }
+            }
+        } catch (Exception e) {
+            throw new RuntimeException("Błąd", e);
         }
+
 
 
 
@@ -115,6 +132,11 @@ public class ViewBookedPackage extends JFrame implements ActionListener {
         setVisible(true);
 
     }
+
+    /**
+     * Tutaj actionPerformed wyłącza okno ViewBookedPackage jeśli naciśniemy przycisk powrotu
+     * @param ae the event to be processed
+     */
     public void actionPerformed(ActionEvent ae){
         setVisible(false);
     }

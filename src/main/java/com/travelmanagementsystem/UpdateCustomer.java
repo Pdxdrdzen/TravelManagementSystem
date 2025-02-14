@@ -5,7 +5,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.*;
 
-
+/**
+ * Klasa UpdateCustomer - służy do aktualizacji danych użytkownika na jego życzenie poprzez Dashboard
+ */
 public class UpdateCustomer extends JFrame implements ActionListener {
 
     JLabel labelusername;
@@ -21,6 +23,13 @@ public class UpdateCustomer extends JFrame implements ActionListener {
     JTextField tfGender;
     JButton back;
     JButton update;
+
+    /**
+     * Konstruktor klasy UpdateCustomer
+     * Inicjalizujemy tu parametry okna, pola tekstowe, przyciski oraz pobieramy dane z bazy na temat uzytkownika
+     * ktory wywolal ta klase
+     * @param username
+     */
     UpdateCustomer(String username){
         setTitle("Aktualizuj dane klienta");
         setBounds(500,200,850,550);
@@ -120,10 +129,16 @@ public class UpdateCustomer extends JFrame implements ActionListener {
         back.addActionListener(this);
         add(back);
 
-        try(Connect conn=new Connect()){
+        String query = "SELECT * FROM customer WHERE username = ?";
 
-            ResultSet rs= conn.s.executeQuery("select * from customer where username = '"+username+"' ");
-            while(rs.next()){
+        try (Connect conn = new Connect();
+             PreparedStatement stmt = conn.prepareStatement(query)) {
+
+            stmt.setString(1, username);
+
+            ResultSet rs = stmt.executeQuery();
+
+            while (rs.next()) {
                 labelusername.setText(rs.getString("username"));
                 labelname.setText(rs.getString("name"));
                 tfID.setText(rs.getString("id"));
@@ -133,13 +148,12 @@ public class UpdateCustomer extends JFrame implements ActionListener {
                 tfAddress.setText(rs.getString("address"));
                 tfPhone.setText(rs.getString("phone"));
                 tfEmail.setText(rs.getString("email"));
-
             }
 
-
-        }catch(Exception e){
-            e.printStackTrace();
+        } catch (SQLException e) {
+            throw new RuntimeException();
         }
+
 
 
 
@@ -148,6 +162,12 @@ public class UpdateCustomer extends JFrame implements ActionListener {
 
 
     }
+
+    /**
+     * Ta funkcja actionPerformed odpowiada za zamiane w bazie danych starych danych użytkownika,
+     * z nowymi, które w tej klasie zostały podane
+     * @param ae the event to be processed
+     */
     public void actionPerformed(ActionEvent ae){
         if(ae.getSource()==update){
             String username=labelusername.getText();
@@ -160,16 +180,30 @@ public class UpdateCustomer extends JFrame implements ActionListener {
             String phone=tfPhone.getText();
             String email=tfEmail.getText();
 
-            try(Connect conn=new Connect()){
-                String query="update customer set username= '"+username+"', id = '"+customerId+"', number = '"+number+ "', name ='"+name+"', gender ='"+gender+"', country ='"+country+"', address ='"+address+"', phone ='"+phone+"', email ='"+email+"'";
-                conn.s.executeUpdate(query);
+            try (Connect conn = new Connect()) {
+                String query = "UPDATE customer SET username = ?, id = ?, number = ?, name = ?, gender = ?, country = ?, address = ?, phone = ?, email = ? WHERE id = ?";
 
-                JOptionPane.showMessageDialog(null,"Dane klienta zaktualizowane poprawnie");
-                setVisible(false);
+                try (PreparedStatement stmt = conn.prepareStatement(query)) {
+                    stmt.setString(1, username);
+                    stmt.setString(2, customerId);
+                    stmt.setString(3, number);
+                    stmt.setString(4, name);
+                    stmt.setString(5, gender);
+                    stmt.setString(6, country);
+                    stmt.setString(7, address);
+                    stmt.setString(8, phone);
+                    stmt.setString(9, email);
+                    stmt.setString(10, customerId); // Assuming the WHERE condition is based on customerId
 
-            }catch(Exception e){
-                e.printStackTrace();
+                    stmt.executeUpdate();
+
+                    JOptionPane.showMessageDialog(null, "Dane klienta zaktualizowane poprawnie");
+                    setVisible(false);
+                }
+            } catch (Exception e) {
+                throw new RuntimeException("Błąd", e);
             }
+
 
 
 

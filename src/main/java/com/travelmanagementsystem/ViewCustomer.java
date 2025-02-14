@@ -1,135 +1,86 @@
 package com.travelmanagementsystem;
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
-
 public class ViewCustomer extends JFrame implements ActionListener {
+    private JButton back;
+    private final JLabel[] valueLabels = new JLabel[9];
 
-    JButton back;
+    private JLabel createAndAddLabel(String text, int x, int y) {
+        JLabel label = new JLabel(text);
+        label.setBounds(x, y, 150, 25);
+        add(label);
+        return label;
+    }
+
     ViewCustomer(String username) {
-        setBounds(450,180,870,625);
+        setBounds(450, 180, 870, 625);
         getContentPane().setBackground(Color.WHITE);
         setLayout(null);
 
-        JLabel lblusername=new JLabel("Nazwa użytkownika");
-        lblusername.setBounds(30,50,150,25);
-        add(lblusername);
+        // Lewa kolumna
+        String[] leftLabels = {"Nazwa użytkownika", "ID", "Numer telefonu", "Imię", "Płeć"};
+        int[] leftY = {50, 110, 170, 230, 290};
 
-        JLabel labelusername=new JLabel();
-        labelusername.setBounds(220,50,150,25);
-        add(labelusername);
+        // Prawa kolumna
+        String[] rightLabels = {"Kraj", "Adres", "Numer telefonu", "Adres email"};
+        int[] rightY = {50, 110, 170, 230};
 
-        JLabel lblid=new JLabel("ID");
-        lblid.setBounds(30,110,150,25);
-        add(lblid);
+        // Tworzenie etykiet
+        for (int i = 0; i < leftLabels.length; i++) {
+            createAndAddLabel(leftLabels[i], 30, leftY[i]);
+            valueLabels[i] = createAndAddLabel("", 220, leftY[i]);
+        }
 
-        JLabel labelid=new JLabel();
-        labelid.setBounds(220,110,150,25);
-        add(labelid);
+        for (int i = 0; i < rightLabels.length; i++) {
+            createAndAddLabel(rightLabels[i], 500, rightY[i]);
+            valueLabels[i + 5] = createAndAddLabel("", 690, rightY[i]);
+        }
 
-        JLabel lblnumber=new JLabel("Numer telefonu");
-        lblnumber.setBounds(30,170,150,25);
-        add(lblnumber);
-
-        JLabel labelnumber=new JLabel();
-        labelnumber.setBounds(220,170,150,25);
-        add(labelnumber);
-
-        JLabel lblname=new JLabel("Imię");
-        lblname.setBounds(30,230,150,25);
-        add(lblname);
-
-        JLabel labelname=new JLabel();
-        labelname.setBounds(220,230,150,25);
-        add(labelname);
-
-        JLabel lblgender=new JLabel("Płeć");
-        lblgender.setBounds(30,290,150,25);
-        add(lblgender);
-
-        JLabel labelgender=new JLabel();
-        labelgender.setBounds(220,290,150,25);
-        add(labelgender);
-
-        JLabel lblcountry=new JLabel("Kraj");
-        lblcountry.setBounds(500,50,150,25);
-        add(lblcountry);
-
-        JLabel labelcountry=new JLabel();
-        labelcountry.setBounds(690,50,150,25);
-        add(labelcountry);
-
-        JLabel lbladdress=new JLabel("Adres");
-        lbladdress.setBounds(500,110,150,25);
-        add(lbladdress);
-
-        JLabel labeladdress=new JLabel();
-        labeladdress.setBounds(690,110,150,25);
-        add(labeladdress);
-
-        JLabel lblphone=new JLabel("Numer telefonu");
-        lblphone.setBounds(500,170,150,25);
-        add(lblphone);
-
-        JLabel labelphone=new JLabel();
-        labelphone.setBounds(690,170,150,25);
-        add(labelphone);
-
-        JLabel lblemail=new JLabel("Adres email");
-        lblemail.setBounds(500,230,150,25);
-        add(lblemail);
-
-        JLabel labelemail=new JLabel();
-        labelemail.setBounds(690,230,150,25);
-        add(labelemail);
-
-        back=new JButton("Wróć");
+        // Przycisk powrotu
+        back = new JButton("Wróć");
         back.setBackground(Color.BLACK);
         back.setForeground(Color.WHITE);
-        back.setBounds(350,350,100,25);
+        back.setBounds(350, 350, 100, 25);
         back.addActionListener(this);
         add(back);
 
-        ImageIcon i1=new ImageIcon(ClassLoader.getSystemResource("ikony/ViewCustomer.png"));
-        Image i2= i1.getImage().getScaledInstance(600,200,Image.SCALE_SMOOTH);
-        ImageIcon i3=new ImageIcon(i2);
-        JLabel image=new JLabel(i3);
-        image.setBounds(120,400,600,200);
+        // Dodawanie obrazu
+        ImageIcon i1 = new ImageIcon(ClassLoader.getSystemResource("ikony/ViewCustomer.png"));
+        Image i2 = i1.getImage().getScaledInstance(600, 200, Image.SCALE_SMOOTH);
+        JLabel image = new JLabel(new ImageIcon(i2));
+        image.setBounds(120, 400, 600, 200);
         add(image);
 
-        try(Connect con=new Connect()){
-            String query="select*from customer where username='"+username+"'";
-            ResultSet rs=con.s.executeQuery(query);
-            while(rs.next()){
-                labelusername.setText(rs.getString("username"));
-                labelid.setText(rs.getString("id"));
-                labelnumber.setText(rs.getString("number"));
-                labelname.setText(rs.getString("name"));
-                labelgender.setText(rs.getString("gender"));
-                labelcountry.setText(rs.getString("country"));
-                labeladdress.setText(rs.getString("address"));
-                labelphone.setText(rs.getString("phone"));
-                labelemail.setText(rs.getString("email"));
-
-            }
-
-        }catch(Exception e){
-            e.printStackTrace();
-        }
-
-
-
-
-
-
+        loadCustomerData(username);
         setVisible(true);
-
     }
-    public void actionPerformed(ActionEvent ae){
+
+    private void loadCustomerData(String username) {
+        try (Connect con = new Connect()) {
+            String query = "SELECT * FROM customer WHERE username = ?";
+            try (PreparedStatement stmt = con.getConnection().prepareStatement(query)) {
+                stmt.setString(1, username);
+                ResultSet rs = stmt.executeQuery();
+                if (rs.next()) {
+                    String[] columns = {"username", "id", "number", "name", "gender",
+                            "country", "address", "phone", "email"};
+                    for (int i = 0; i < columns.length; i++) {
+                        valueLabels[i].setText(rs.getString(columns[i]));
+                    }
+                }
+            }
+        } catch (Exception e) {
+            throw new RuntimeException("Błąd", e);
+        }
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
         setVisible(false);
     }
 }

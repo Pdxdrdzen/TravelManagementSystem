@@ -2,6 +2,10 @@ package com.travelmanagementsystem;
 import javax.swing.*;
 import java.awt.*;
 
+/**
+ * Klasa Destinations - Klasa obsługująca forme przedstawienia użytkownikowi kierunków podróży w sposób "sliedeshow" ,
+ * czyli wyświetlanie destynacji po kolei używając wątków do przetwarzania
+ */
 public class Destinations extends JFrame implements Runnable{
 
     private transient Thread t1;
@@ -19,6 +23,10 @@ public class Destinations extends JFrame implements Runnable{
     JLabel country;
     String[] text2=new String[]{"Hurghada, Egipt","Portomaso, Malta","Alanya, Turcja","Las Palmas, Hiszpania","Adeje, Teneryfa","Norwegia","Cabanas, Portugalia","Gdańsk, Polska","Amsterdam, Holandia","Kreta, Grecja"};
 
+    /**
+     * Funkcja run implementujaca forme prezentacje z użyciem wątków
+     * Wątek - usypia się na chwile aby dać efekt przechodzenia
+     */
     public void run(){
         try{
             for(int i=0;i<=9;i++){
@@ -31,10 +39,14 @@ public class Destinations extends JFrame implements Runnable{
 
         }catch(InterruptedException e){
             Thread.currentThread().interrupt();
-            e.printStackTrace();
+            throw new RuntimeException();
         }
     }
 
+    /**
+     * Konstruktor klasy Destinations -ustawiamy parametry ekranowe, wgrywamy zdjecia roznych krajobrazow destynacji,
+     * oraz pola tekstowe z ich nazwami
+     */
     Destinations() {
         setBounds(500,200,800,600);
 

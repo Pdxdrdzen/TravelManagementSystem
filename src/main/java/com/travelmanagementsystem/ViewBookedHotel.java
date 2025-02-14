@@ -4,12 +4,26 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
+/**
+ * Klasa ViewBookedHotel- służy do wyświetlenia użytkownikowi hotelu, który
+ * udało mu się zarezerwować, łącznie z jego całkowitą ceną, lokalizacją,
+ * wyżywieniem.
+ */
 public class ViewBookedHotel extends JFrame implements ActionListener {
 
     JButton back;
 
+    /**
+     * Konstruktor klasy ViewBookedHotel
+     * Inicjalizujemy tu parametry okienka, pola tekstowe
+     * Tutaj również inicjalizujemy połączenie z bazą danych i pobranie
+     * od niej danych w celu wyświetlenia konkretnego zarezerwowanego hotelu
+     * dla konkretnego użytkownika
+     * @param username
+     */
     ViewBookedHotel(String username) {
         setBounds(400,200,1000,600);
         getContentPane().setBackground(Color.WHITE);
@@ -91,23 +105,28 @@ public class ViewBookedHotel extends JFrame implements ActionListener {
         image.setBounds(0,0,1000,600);
         add(image);
 
-        try(Connect con=new Connect()){
+        try (Connect con = new Connect()) {
+            String query = "SELECT * FROM bookhotel WHERE username = ?";
 
-            String query="select*from bookhotel where username='"+username+"'";
-            ResultSet rs=con.s.executeQuery(query);
-            while(rs.next()){
-                labelusername.setText(rs.getString("username"));
-                labeldestination.setText(rs.getString("destination"));
-                labelhotel.setText(rs.getString("name"));
-                labelpeople.setText(rs.getString("people"));
-                labelfood.setText(rs.getString("food"));
-                labelphone.setText(rs.getString("phone"));
-                labelprice.setText(rs.getString("price"));
+            try (PreparedStatement stmt = con.getConnection().prepareStatement(query)) {
+                stmt.setString(1, username);
+
+                ResultSet rs = stmt.executeQuery();
+
+                while (rs.next()) {
+                    labelusername.setText(rs.getString("username"));
+                    labeldestination.setText(rs.getString("destination"));
+                    labelhotel.setText(rs.getString("name"));
+                    labelpeople.setText(rs.getString("people"));
+                    labelfood.setText(rs.getString("food"));
+                    labelphone.setText(rs.getString("phone"));
+                    labelprice.setText(rs.getString("price"));
+                }
             }
-
-        }catch(Exception e){
-            e.printStackTrace();
+        } catch (Exception e) {
+            throw new RuntimeException("Błąd ", e);
         }
+
 
 
 

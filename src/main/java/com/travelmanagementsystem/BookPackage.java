@@ -5,6 +5,10 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.*;
 
+/**
+ * Klasa BookPackage - służy do zarezerwowania oferty przez użytkownika
+ * i zapisaniu informacji o niej w bazie danych
+ */
 public class BookPackage extends JFrame implements ActionListener {
     private static final String FONT_NAME = "Tahoma";
 
@@ -185,14 +189,23 @@ public class BookPackage extends JFrame implements ActionListener {
 
 
         }else if(ae.getSource()== bookpackageButton){
-            try(Connect conn=new Connect()){
+            try (Connect conn = new Connect()) {
+                String sql = "INSERT INTO bookpackage VALUES (?, ?, ?, ?, ?, ?, ?)";
+                PreparedStatement pstmt = conn.prepareStatement(sql);
 
-                conn.s.executeUpdate("insert into bookpackage values('"+labelusername.getText()+"','"+cpackage.getSelectedItem()+"','"+tfpeople.getText()+"','"+labelid.getText()+"','"+labelnumber.getText()+"','"+labelphone.getText()+"','"+labelprice.getText()+"')");
+                pstmt.setString(1, labelusername.getText());
+                pstmt.setString(2, cpackage.getSelectedItem());
+                pstmt.setString(3, tfpeople.getText());
+                pstmt.setString(4, labelid.getText());
+                pstmt.setString(5, labelnumber.getText());
+                pstmt.setString(6, labelphone.getText());
+                pstmt.setString(7, labelprice.getText());
 
-                JOptionPane.showMessageDialog(null,"Oferta zarezerwowana z sukcesem!");
+                pstmt.executeUpdate();
+                JOptionPane.showMessageDialog(null, "Oferta zarezerwowana z sukcesem!");
                 setVisible(false);
-            }catch(Exception e){
-                e.printStackTrace();
+            } catch (Exception e) {
+                throw new RuntimeException();
             }
 
         }else {
